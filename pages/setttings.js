@@ -15,7 +15,7 @@ const Settings = ({d}) => {
 
             <Header />
 
-            <div className='min-h-screen w-full justify-center items-center bg-gradient-to-br from-green-600 to-orange-600'>
+            <div className='min-h-screen w-full justify-center items-center bg-gradient-to-b from-green-600 to-orange-600'>
                 <section className='max-h w-full md:w-3/4 xl:w-1/2'>
                     
                 </section>

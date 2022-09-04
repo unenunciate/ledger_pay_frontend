@@ -17,7 +17,7 @@ export default function Home() {
 
             <Header />
 
-            <section className="px-2 pt-32 bg-gradient-to-br from-green-600 to-orange-600 md:px-0 min-h-screen w-full">
+            <section className="px-2 pt-32 bg-gradient-to-b from-green-600 to-orange-600 md:px-0 min-h-screen w-full">
                 <div className="items-center max-w-6xl px-5 mx-auto space-y-12 text-center">
                     <h1 className="text-4xl font-extrabold tracking-tight text-left text-green-900 sm:text-5xl md:text-6xl md:text-center">
                         <span className="block">Send <span className="block mt-1 text-orange-600 lg:inline lg:mt-0">$$$</span> Instantly <span className="block mt-1 text-orange-600 lg:inline lg:mt-0">Anyway</span></span>
@@ -33,7 +33,7 @@ export default function Home() {
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
-                        <a href="#_" className="flex items-center px-6 py-3 text-orange-300 bg-green-300 border-orange-300 border-2 rounded-lg hover:bg-green-100 hover:text-orange-100">
+                        <a href="#_" className="flex items-center px-6 py-3 text-orange-500 bg-green-500 border-orange-500 border-2 rounded-lg hover:bg-green-300 hover:text-orange-300">
                             Pay Others
                         </a>
                     </div>

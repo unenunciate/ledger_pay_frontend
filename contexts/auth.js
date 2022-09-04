@@ -1,7 +1,6 @@
 import { initStytch, StytchProvider } from '@stytch/stytch-react';
 import { createContext, useState, useMemo, useEffect} from 'react';
 import useUpdateEffect from '../hooks/useUpdateEffect';
-import useStream from '../hooks/useStream';
 import { useCookies }  from 'react-cookie';
 import * as ethers from 'ethers';
 import axios from 'axios';

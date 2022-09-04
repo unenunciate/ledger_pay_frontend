@@ -2,7 +2,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['strapi.ledgerpay.com'],
+    domains: ['strapi.ledgerpay.io', 'pbs.twimg.com'],
   },
 }
 

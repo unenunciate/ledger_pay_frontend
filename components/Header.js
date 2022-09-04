@@ -18,10 +18,10 @@ const Header = () => {
                         <a className="flex items-center h-full w-1/4"><span className="text-xl text-center text-gray-300 hover:text-gray-100">LedgerPay</span></a>
                     </Link>
 
-                    <nav className={`flex-row flex w-1/2  items-center  justify-center h-full`}>
-                        <input className="w-1/4 bg-gray-300 placeholder-green-900 active:border-2 active:border-green-900 text-center py-2 rounded-3xl shadow-xl" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)}/>
+                    <nav className={`flex-row flex w-1/2 items-center justify-center h-full`}>
+                        <input className="w-1/3 bg-gray-300 placeholder-green-600 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-700 text-center py-2 rounded-3xl shadow-xl mr-2" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)}/>
                         <Link href={`/search?credential=${query}`}>
-                            <a className="flex items-center rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:bg-gray-500">
+                            <a className="flex items-center rounded-full justify-center p-2 text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:ring-green-700 active:ring-2 active:bg-gray-500">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -42,7 +42,7 @@ const Header = () => {
                     </nav>
 
                     <div className='flex items-center justify-end  h-full w-1/4'>
-                        <div className='relative flex items-center justify-end w-full h-max'>
+                        <div className='relative flex items-center justify-end w-full h-max space-x-4'>
                             <div className="flex items-center rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400">
                                 {user?.domain}
                             </div>
@@ -50,14 +50,14 @@ const Header = () => {
                             <div className="flex items-center rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:bg-gray-500">
                                 <NetworkDisplay />
 
-                                <select onChange={(e) => setNetwork(e.target.value)} className="flex items-center rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:bg-gray-500 shadow-lg" text="V">
-                                    {user?.networks.map((network)=> {
-                                        <option key={network.name} value={network.name} />
+                                <select onChange={(e) => setNetwork(e.target.value)} className="flex items-center rounded-full p-2 justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:bg-gray-500 shadow-lg" text="V">
+                                    {user?.networks?.map((network)=> {
+                                        return <option key={network.name} value={network.name} />
                                     })}
                                 </select>
                             </div>
                             
-                            <button onClick={() => setOpen(true)} className="flex items-center rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:bg-gray-500">
+                            <button onClick={() => setOpen(true)} className="flex items-center p-2 rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:bg-gray-500">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"

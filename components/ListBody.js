@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import Odds from '../components/Odds';
-
 const ListItem = ({id, creater, dateRange, ante, challengeAmount, goals, odds}) => {
     return (
         <Link href={`${process.env.NEXT_PUBLIC_NEXT_URL}/c/${id}`}>
@@ -50,7 +48,7 @@ const ListItem = ({id, creater, dateRange, ante, challengeAmount, goals, odds}) 
                 </div>
                 <span className="w-1/6 h-max flex flex-col justify-center items-center border-r-1 border-gray-400">
                     <span className="w-full flex flex-col justify-center items-center">
-                        <Odds {...odds} />
+                        
                     </span>
                 </span>
             </div>

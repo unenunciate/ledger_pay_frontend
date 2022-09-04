@@ -2,6 +2,7 @@ import Head from 'next/head';
 
 import usePaginatable from '../hooks/usePaginatable';
 
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -9,7 +10,6 @@ import ListBody from '../components/ListBody';
 import ListPagination from '../components/ListPagination';
 
 const Portfolio = ({p, pm, d}) => {
-    useAuth(true);
 
     const {page, pageMax, setPage, list} = usePaginatable(p, d.pageMax, ``, d.results);
 
@@ -21,8 +21,8 @@ const Portfolio = ({p, pm, d}) => {
 
             <Header />
 
-            <section className='flex flex-col items-center justify-center w-full min-h-screen bg-gradient-to-br from-green-600 to-orange-600'>
-                <div className='flex flex-row w-3/4 py-4 bg-gray-300 border-2 border-gray-500 lg:w-2/3 2xl:w-1/2 h-128 rounded-xl shadow-lg shadow-gray-500'>
+            <section className='flex flex-col items-center w-full min-h-screen bg-gradient-to-b from-green-600 to-orange-600 space-y-16 pt-16'>
+                <div className='flex flex-row w-3/4 py-4 bg-gray-300 border-2 border-gray-500 lg:w-2/3 2xl:w-1/2 h-[180px] rounded-xl shadow-lg shadow-gray-500'>
                    <div className='flex flex-col items-center justify-center w-1/2 border-gray-500 max-h border-r-1'>
                         <span>${d.assets.totalValue}</span>
                         <span>Total Assets</span>

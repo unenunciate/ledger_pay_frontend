@@ -1,14 +1,13 @@
 import Head from 'next/head'
 
 import { useState, useCallback } from 'react';
-import useFilterable from '../hooks/useFilterable';
+
 import usePaginatable from '../hooks/usePaginatable';
 import useUpdateEffect from '../hooks/useUpdateEffect';
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import ListFilter from '../components/ListFilter'
 import ListBody from '../components/ListBody'
 import ListPagination from '../components/ListPagination'
 
@@ -25,7 +24,7 @@ const Search = ({p, fq = [], d}) => {
 
             <Header />
 
-            <section className='min-h-screen w-full flex flex-col justify-center items-center bg-gradient-to-br from-green-600 to-orange-600'>
+            <section className='min-h-screen w-full flex flex-col justify-center items-center bg-gradient-to-b from-green-600 to-orange-600'>
                 <ListBody list={list} />
                 <ListPagination page={page} setPage={setPage} pageMax={pageMax} />
             </section>
