@@ -17,8 +17,8 @@ export default function Home() {
 
             <Header />
 
-            <section className="px-2 pt-32 bg-gradient-to-br from-green-600 to-orange-600 md:px-0">
-                <div className="container items-center max-w-6xl px-5 mx-auto space-y-12 text-center">
+            <section className="px-2 pt-32 bg-gradient-to-br from-green-600 to-orange-600 md:px-0 min-h-screen w-full">
+                <div className="items-center max-w-6xl px-5 mx-auto space-y-12 text-center">
                     <h1 className="text-4xl font-extrabold tracking-tight text-left text-green-900 sm:text-5xl md:text-6xl md:text-center">
                         <span className="block">Send <span className="block mt-1 text-orange-600 lg:inline lg:mt-0">$$$</span> Instantly <span className="block mt-1 text-orange-600 lg:inline lg:mt-0">Anyway</span></span>
                     </h1>
@@ -38,9 +38,7 @@ export default function Home() {
                         </a>
                     </div>
                 </div>
-                <div className="container items-center max-w-4xl px-5 mx-auto mt-16 text-center">
-                    
-                </div>
+                
             </section>
 
             <Footer />
