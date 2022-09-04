@@ -71,7 +71,7 @@ const Signup = () => {
   return (
     <div className='flex flex-col items-center justify-center w-full h-screen bg-gradient-to-b from-green-600 to-orange-600'>
       <section className='flex flex-col items-center justify-center w-5/6 pb-6 bg-gray-300 rounded-xl shadow-xl boarder-2 boarder-gray-500 md:w-3/4 lg:w-1/2 2xl:w-1/3 shadow-gray-500'>
-        <Link href='https://www.ledgerpay.com'><a className='items-center w-1/3 my-12 text-2xl text-center text-white'>LedgerPay</a></Link>
+        <Link href='https://www.ledgerpay.io'><a className='items-center w-1/3 my-12 text-2xl text-center text-white'>LedgerPay</a></Link>
 
         <div className='flex items-center w-3/4 h-16 mb-4'/>
        
