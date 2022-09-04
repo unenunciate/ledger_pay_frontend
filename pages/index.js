@@ -33,7 +33,7 @@ export default function Home() {
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
-                        <a href="#_" className="flex items-center px-6 py-3 text-orange-500 bg-green-500 border-orange-500 border-2 rounded-lg hover:bg-green-300 hover:text-orange-300">
+                        <a href="#_" className="flex font-bold items-center px-6 py-3 text-green-200 bg-gradient-to-t from-orange-500 to-green-600 border-orange-300 border-2 rounded-lg hover:bg-green-500 hover:text-white">
                             Pay Others
                         </a>
                     </div>

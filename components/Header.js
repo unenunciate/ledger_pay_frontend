@@ -15,7 +15,7 @@ const Header = () => {
             <header className="w-full px-4 py-2 text-gray-300 bg-green-600 h-[10vh]">
                 <div className="flex flex-row justify-between w-full h-full">
                     <Link href="/" >
-                        <a className="flex items-center h-full w-1/4"><span className="text-xl text-center text-gray-300 hover:text-gray-100">LedgerPay</span></a>
+                        <a className="flex items-center h-full w-1/4"><span className="text-xl text-center text-gray-500 hover:text-gray-300">LedgerPay</span></a>
                     </Link>
 
                     <nav className={`flex-row flex w-1/2 items-center justify-center h-full`}>
@@ -42,7 +42,7 @@ const Header = () => {
                     </nav>
 
                     <div className='flex items-center justify-end  h-full w-1/4'>
-                        <div className='relative flex items-center justify-end w-full h-max space-x-4'>
+                        <div className='relative flex items-center justify-end w-full h-max space-x-4 px-2'>
                             <div className="flex items-center rounded-full justify-center text-green-600 bg-gray-300 hover:bg-gray-100 hover:text-green-400">
                                 {user?.domain}
                             </div>

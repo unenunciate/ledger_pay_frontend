@@ -26,7 +26,7 @@ const AccountDropdown = ({open, setOpen}) => {
   }, [dropdownRef.current, setOpen, open]);
 
   return (
-        <div ref={dropdownRef} className={`${open ? '' : 'hidden'} fixed right-2 bottom-0 -mb-2 z-40 w-32 h-48 bg-green-300 rounded-2xl border-gray-100 border-2 shadow-2 shadow-black`}>
+        <div ref={dropdownRef} className={`${open ? '' : 'hidden'} absolute right-0 bottom-0 -mb-[200px] -mr-[32px] z-40 w-32 h-48 bg-gradient-to-t from-orange-400 via-green-600 to-green-600 rounded-2xl border-gray-100 border-2 shadow-2 shadow-black`}>
             <ul className='flex flex-col px-2 py-4 justify-between w-full h-full'>
                 <li className='text-gray-300 hover:text-gray-100 w-full flex justify-center items-center'><Link href="/portfolio" ><a className="flex text-center py-2 w-2/3  active:text-gray-500">Portfolio</a></Link></li>
                 <li className='text-gray-300 hover:text-gray-100 w-full flex justify-center items-center'><Link href="/settings" ><a className="flex text-center py-2 w-2/3  active:text-gray-500">Settings</a></Link></li>
