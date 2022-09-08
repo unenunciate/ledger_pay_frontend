@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    
+      .remove-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+  
+      .remove-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+  
+      .style-scrollbar {
+      }
+  
+      .style-scrollbar::-webkit-scrollbar {
+        width: 10px;
+      }
+  
+      /* Track */
+      .style-scrollbar::-webkit-scrollbar-track {
+        background: #d62828;
+      }
+  
+      /* Handle */
+      .style-scrollbar::-webkit-scrollbar-thumb {
+        background: #000;
+        border-radius: 1rem;
+      }
+  
+      /* Handle on hover */
+      .style-scrollbar::-webkit-scrollbar-thumb:hover {
+      }
+    
+  }
