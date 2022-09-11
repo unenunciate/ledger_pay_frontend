@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useAuth from '../../hooks/useAuth';
@@ -69,16 +70,16 @@ const Signup = () => {
   }, [user])
   
   return (
-    <div className='flex flex-col items-center justify-center w-full h-screen bg-gradient-to-b from-green-600 to-orange-600'>
-      <section className='flex flex-col items-center justify-center w-5/6 pb-6 bg-gray-300 rounded-xl shadow-xl boarder-2 boarder-gray-500 md:w-3/4 lg:w-1/2 2xl:w-1/3 shadow-gray-500'>
-        <Link href='https://www.ledgerpay.io'><a className='items-center w-1/3 my-12 text-2xl text-center text-white'>LedgerPay</a></Link>
+    <div className='flex flex-col items-center justify-center w-full h-screen bg-gradient-to-b from-purple-600 to-blue-400'>
+      <section className='flex flex-col items-center justify-center w-5/6 py-6 pb-6 bg-gray-800 shadow-xl rounded-xl md:w-3/4 lg:w-1/2 2xl:w-1/3 shadow-gray-800'>
+        <Link href={"https://www.ledgepay.io"}><a className="flex items-center h-full px-6 rounded-lg hover:bg-gray-900"><Image width={32} height={32} src="/LedgePay.png" layout="fixed" /></a></Link>
 
         <div className='flex items-center w-3/4 h-16 mb-4'/>
        
         <div div className='w-3/4 h-full space-y-6'>
           <form onSubmit={onSignupSubmit} className={`w-full flex flex-col space-y-12 justify-center items-center ${false ? 'invisiable' : ''}`}>
               <input
-                className={`w-full bg-gray-300 border-2 border-gray-500 text-gray-500 rounded-xl text-center px-2 py-2 shadow-xl shadow-gray-500`}
+                className={`h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-full form-input focus:border-none focus:outline-none`}
                 placeholder='Email or Phone'
                 value={credential}
                 onChange={(e) => onCredentialChange(e.target.value)}
@@ -86,22 +87,22 @@ const Signup = () => {
               />
 
               <input
-                className={`w-full bg-gray-300 border-2 border-gray-500 text-gray-500 rounded-xl text-center px-2 py-2 shadow-xl shadow-gray-500`}
-                placeholder="username"
+                className={`h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-full form-input focus:border-none focus:outline-none`}
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 type="text"
               />
 
               <input
-                className={`w-full bg-gray-300 border-2 border-gray-500 text-gray-500 rounded-xl text-center px-2 py-2 shadow-xl shadow-gray-500`}
-                placeholder="name"
+                className={`h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-full form-input focus:border-none focus:outline-none`}
+                placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
               />
 
-              <input disabled={(!invalidEmail || !invalidPhone) || name.length < 3 || username.length < 3 } className='w-2/3 h-8 shadow-xl border-2 shadow-green-400 text-green-600 border-green-600 bg-gray-300 rounded-xl text-bold hover:border-green-400 hover:text-green-400 hover:bg-gray-100 active:scale-75' type="submit" value="Submit" />
+              <input disabled={(!invalidEmail || !invalidPhone) || name.length < 3 || username.length < 3 } className='relative w-2/3 py-2 font-bold text-blue-400 bg-purple-600 shadow-md shadow-purple-600 hover:shadow-purple-300 rounded-xl text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75' type="submit" value="Submit" />
             </form>
         </div>
       </section>

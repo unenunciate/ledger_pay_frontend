@@ -17,19 +17,17 @@ const Search = ({p, fq = [], d}) => {
     const {page, pageMax, setPage, list} = usePaginatable(p, d.pageMax, ``, d.results);
 
     return (
-        <div className='h-full w-full'>
+        <div className='w-full h-full'>
             <Head>
                 <title>LedgerPay - Pay On Your Terms</title>
             </Head>
 
             <Header />
 
-            <section className='min-h-screen w-full flex flex-col justify-center items-center bg-gradient-to-b from-green-600 to-orange-600'>
+            <section className='flex flex-col items-center justify-center w-full min-h-screen bg-gray-800'>
                 <ListBody list={list} />
                 <ListPagination page={page} setPage={setPage} pageMax={pageMax} />
             </section>
-
-            <Footer />
         </div>
     );
 }
