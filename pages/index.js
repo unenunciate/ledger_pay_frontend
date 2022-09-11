@@ -3,8 +3,6 @@ import Image from 'next/image';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
-import Footer from '../components/Footer';
-
 import useAuth from '../hooks/useAuth';
 
 export default function Home() {
