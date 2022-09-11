@@ -4,24 +4,29 @@ import Image from "next/image";
 import Drawer from './Drawer';
 
 import useAuth from '../hooks/useAuth';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const Header = () => {
     const {user, setNetwork} = useAuth();
     const [query, setQuery] = useState('');
     const [open, setOpen] = useState(false);
 
-    return (
-            <header className="w-full px-4 py-2 text-gray-300 bg-green-600 h-[10vh]">
-                <div className="flex flex-row justify-between w-full h-full">
-                    <Link href="/" >
-                        <a className="flex items-center w-1/4 h-full"><Image width={32} height={32} href="/LedgePay.png" layout="fixed" /></a>
-                    </Link>
+    useEffect(() => {
+        console.log(`Open has changed to: ${open}`);
+    }, [open])
 
+    return (
+            <header className="w-full px-4 py-2 text-gray-300 bg-gray-800 h-[10vh]">
+                <div className="flex flex-row justify-between w-full h-full">
+                    <div className="flex items-center w-1/4 h-full">
+                        <Link href="/" >
+                            <a className="flex items-center h-full px-6 rounded-lg hover:bg-gray-900"><Image width={32} height={32} src="/LedgePay.png" layout="fixed" /></a>
+                        </Link>
+                    </div>
                     <nav className={`flex-row flex w-1/2 items-center justify-center h-full`}>
-                        <input className="w-1/3 py-2 mr-2 text-center text-green-900 placeholder-green-600 bg-gray-300 shadow-xl focus:outline-none focus:ring-2 focus:ring-green-700 rounded-3xl" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)}/>
+                        <input className="w-1/3 py-2 mr-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-700 rounded-3xl" placeholder="Search" value={query} onChange={(e) => setQuery(e.target.value)}/>
                         <Link href={`/search?credential=${query}`}>
-                            <a className="flex items-center justify-center p-2 text-green-600 bg-gray-300 rounded-full hover:bg-gray-100 hover:text-green-400 active:text-green-900 active:ring-green-700 active:ring-2 active:bg-gray-500">
+                            <a className="flex items-center justify-center p-2 text-blue-400 bg-gray-700 rounded-full hover:bg-gray-500 hover:text-blue-700 hover:ring-blue-700 hover:ring-2 active:bg-gray-700">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -45,7 +50,7 @@ const Header = () => {
                         <div className='relative flex items-center justify-end w-full px-2 space-x-4 h-max'>
                             
                             
-                            <button onClick={() => setOpen(true)} className="flex items-center justify-center p-2 text-green-600  hover:text-green-400 active:text-green-900">
+                            <button onClick={() => setOpen(true)} className="flex items-center justify-center px-6 py-2 text-purple-600 hover:text-purple-300 active:text-purple-900">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -64,7 +69,7 @@ const Header = () => {
                                 </svg>
                             </button>
 
-                            <Drawer isOpen={open} setIsOpen={setOpen} />
+                            <Drawer open={open} setOpen={setOpen} />
                         </div>
                     </div>
                 </div>

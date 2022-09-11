@@ -1,12 +1,23 @@
 import Head from 'next/head';
 import Image from 'next/image';
 
+import SendReceive from '../components/SendReceive';
+import BuySellSwap from '../components/BuySellSwap';
+
 import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
 import useAuth from '../hooks/useAuth';
+import { useState } from 'react';
 
 export default function Home() {
     useAuth();
+
+    const [openBSS, setOpenBSS] = useState(false);
+    const [tabBSS, setTabBSS] = useState(0);
+
+    const [openSR, setOpenSR] = useState(false);
+    const [tabSR, setTabSR] = useState(0);
+
+    const d = { assets: {totalValue: 100, amountAssets: 2}};
 
     return (
         <div className='w-full h-full'>
@@ -16,33 +27,152 @@ export default function Home() {
 
             <Header />
             
-            <div className='flex flex-row'>
-                <Sidebar />
-                <section className="flex flex-col content-center h-[90vh] px-4 pb-12 pr-32 overflow-y-scroll style-scrollbar overscroll-contain remove-scrollbar pt-32 bg-gradient-to-b from-green-600 to-orange-600 md:px-0 w-full">
-                    <div className="items-center max-w-6xl px-5 mx-auto space-y-12 text-center">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-left text-green-900 sm:text-5xl md:text-6xl md:text-center">
-                            <span className="block">Send <span className="block mt-1 text-orange-600 lg:inline lg:mt-0">$$$</span> Instantly <span className="block mt-1 text-orange-600 lg:inline lg:mt-0">Anyway</span></span>
-                        </h1>
-                        <p className="w-full mx-auto text-base text-left text-gray-300 sm:text-lg lg:text-2xl md:max-w-3xl md:text-center">
-                            Are you ready to use magic internet money?
-                        </p>
-                        <div className="relative flex flex-col justify-center md:flex-row md:space-x-4">
-                            <a href="#_" className="flex items-center w-full px-6 py-3 mb-3 text-lg text-green-300 bg-orange-600 rounded-lg md:mb-0 hover:bg-orange-400 hover:text-green-100 md:w-auto">
-                                Pay Yourself
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                            <a href="#_" className="flex items-center px-6 py-3 font-bold text-green-200 border-2 border-orange-300 rounded-lg bg-gradient-to-t from-orange-500 to-green-600 hover:bg-green-500 hover:text-white">
-                                Pay Others
-                            </a>
+           
+            <section className="flex flex-col content-center min-h-[90vh] px-4 pb-12 pr-32 overflow-y-scroll style-scrollbar overscroll-contain remove-scrollbar pt-16 bg-gray-800 md:px-0 w-full">
+                <div className="flex flex-col items-center w-full px-5 mx-auto space-y-12 text-center lg:w-2/3">
+                    <div className='flex flex-row w-full py-4 bg-gray-800 border-2 border-purple-600 h-[140px] rounded-xl shadow-sm text-blue-400 shadow-purple-600'>
+                        <div className='flex flex-col items-center justify-center w-1/2 border-r-2 border-purple-600 max-h'>
+                                <span>${d.assets.totalValue}</span>
+                                <span>Total Assets</span>
+                        </div>
+
+                        <div className='flex flex-col items-center justify-center w-1/2 max-h'>
+                                <span>{d.assets.amountAssets}</span>
+                                <span>Amount of Assets</span>
                         </div>
                     </div>
+                    <div className='flex flex-row justify-around w-full'>
                     
-                </section>
-            </div>
-            
+                            <button onClick={() => {
+                                setTabBSS(0);
+                                setOpenBSS(true);
+                            }} className="flex flex-col items-center justify-center px-2 py-1 space-y-2 text-blue-400 hover:text-blue-100 group">
+                                <div className='flex flex-col items-center justify-center w-12 h-12 text-blue-400 bg-purple-600 rounded-full group-hover:bg-purple-300'>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        className="feather feather-plus"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M12 5L12 19"></path>
+                                        <path d="M5 12L19 12"></path>
+                                    </svg>
+                                </div>
+
+                                <span>Buy</span>
+                            </button>
+                            <button onClick={() => {
+                                setTabBSS(1);
+                                setOpenBSS(true);
+                            }} className="flex flex-col items-center justify-center px-2 py-1 space-y-2 text-blue-400 hover:text-blue-100 group">
+                                <div className='flex flex-col items-center justify-center w-12 h-12 text-blue-400 bg-purple-600 rounded-full group-hover:bg-purple-300'>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        className="feather feather-minus"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M5 12L19 12"></path>
+                                    </svg>
+                                </div>
+                                
+                                <span>Sell</span>
+                            </button>
+
+                            <button onClick={() => {
+                                setTabBSS(2);
+                                setOpenBSS(true);
+                            }} className="flex flex-col items-center justify-center px-2 py-1 space-y-2 text-blue-400 hover:text-blue-100 group">
+                                <div className='flex flex-col items-center justify-center w-12 h-12 text-blue-400 bg-purple-600 rounded-full group-hover:bg-purple-300'>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        className="feather feather-repeat"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M17 1L21 5 17 9"></path>
+                                        <path d="M3 11V9a4 4 0 014-4h14"></path>
+                                        <path d="M7 23L3 19 7 15"></path>
+                                        <path d="M21 13v2a4 4 0 01-4 4H3"></path>
+                                    </svg>
+                                </div>
+                                
+                                <span>Swap</span>
+                            </button>
+
+                            <button onClick={() => {
+                                setTabSR(0);
+                                setOpenSR(true);
+                            }} className="flex flex-col items-center justify-center px-2 py-1 space-y-2 text-blue-400 hover:text-blue-100 group">
+                                <div className='flex flex-col items-center justify-center w-12 h-12 text-blue-400 bg-purple-600 rounded-full group-hover:bg-purple-300'>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        className="feather feather-arrow-up-right"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M7 17L17 7"></path>
+                                        <path d="M7 7L17 7 17 17"></path>
+                                    </svg>
+                                </div>
+                                
+                                <span>Send</span>
+                            </button>
+                            <button onClick={() => {
+                                setTabSR(1);
+                                setOpenSR(true);
+                            }} className="flex flex-col items-center justify-center px-2 py-1 space-y-2 text-blue-400 hover:text-blue-100 group">
+                                <div className='flex flex-col items-center justify-center w-12 h-12 text-blue-400 bg-purple-600 rounded-full group-hover:bg-purple-300'>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        className="feather feather-arrow-down-right"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M7 7L17 17"></path>
+                                        <path d="M17 7L17 17 7 17"></path>
+                                    </svg>
+                                </div>
+                                
+                                <span>Receive</span>
+                            </button>
+                
+                    </div>
+                </div>
+                
+                <SendReceive open={openSR} setOpen={setOpenSR} tab={tabSR} />
+                <BuySellSwap open={openBSS} setOpen={setOpenBSS} tab={tabBSS} />
+            </section>
         </div>
     )
 }

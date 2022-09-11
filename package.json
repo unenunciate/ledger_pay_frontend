@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.0",
+    "@headlessui/tailwindcss": "^0.1.1",
+    "@heroicons/react": "^2.0.10",
     "@stytch/stytch-react": "^4.1.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
@@ -25,6 +27,7 @@
     "react-cookie": "^4.1.1",
     "react-cookies": "^0.1.1",
     "react-dom": "18.2.0",
+    "react-qr-code": "^2.0.7",
     "stytch": "^5.10.0",
     "tailwindcss": "^3.1.6",
     "xstream": "^11.14.0"
