@@ -18,7 +18,7 @@ const networks = [
 
 const SendReceive = ({ open, setOpen, tab }) => {
 
-    const [selectedCrypto, setSelectedCrypto] = useState(cryptos[0]);
+    const [selectedCrypto, setSelectedCrypto] = useState(cryptos[1]);
     const [selectedNetwork, setSelectedNetwork] = useState(networks[0]);
     const [dollarAmount, setDollarAmount] = useState(0);
     const [address, setAddress] = useState("");
