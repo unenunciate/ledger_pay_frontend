@@ -5,7 +5,7 @@ export interface ClientConfig {
   chainId: number
 }
 
-const ClientConfigation = {
+const ClientConfiguration = {
   paymasterAddress: "",
   entryPointAddress: "",
   bundlerUrl: "",
@@ -13,5 +13,5 @@ const ClientConfigation = {
 }
 
 export {
-  ClientConfigation
+  ClientConfiguration
 } 

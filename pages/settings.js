@@ -1,11 +1,22 @@
 import Head from 'next/head';
 
-import useAuth from '../hooks/useAuth';
+import dynamic from 'next/dynamic';
 
 import Header from '../components/Header';
 
+import useAuth from '../hooks/useAuth';
+import useWorldId from '../hooks/useWorldId';
+
+import { WidgetProps } from "@worldcoin/id";
+
+const WorldIDWidget = dynamic<WidgetProps>(
+    () => import("@worldcoin/id").then((mod) => mod.WorldIDWidget),
+    { ssr: false }
+);
+
 const Settings = ({d}) => {
     const { user } = useAuth(true);
+    const { enable, response } = useWorldId();
 
     return (
         <div className='h-full w-full'>
@@ -17,7 +28,15 @@ const Settings = ({d}) => {
 
             <div className='min-h-screen w-full justify-center items-center bg-gray-800'>
                 <section className='max-h w-full md:w-3/4 xl:w-1/2'>
-                    
+                
+
+                    <WorldIDWidget
+                        actionId="wid_BPZsRJANxct2cZxVRyh80SFG" // obtain this from developer.worldcoin.org
+                        signal="my_signal"
+                        enableTelemetry
+                        onSuccess={(verificationResponse) => console.log(verificationResponse)}
+                        onError={(error) => console.error(error)}
+                    />;
                 </section>
             </div>
         </div>

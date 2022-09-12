@@ -8,7 +8,7 @@ import {
 import { TransactionDetailsForUserOp } from './TransactionDetailsForUserOp'
 import { resolveProperties } from 'ethers/lib/utils'
 import { PaymasterAPI } from './PaymasterAPI'
-import { getRequestId } from '@erc4337/common'
+import { getRequestId } from './ERC4337Utils'
 
 /**
  * Base class for all Smart Wallet ERC-4337 Clients to implement.

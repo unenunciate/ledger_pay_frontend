@@ -4,13 +4,13 @@ import { SmartAccountContext } from '../contexts/smartAccountt';
 import { isEmpty } from 'lodash';
 
 const useSmartAccount = () => {
-    const { SmartAccountSigner, SmartAccountAPI, SmartAccountRPC } = useContext(SmartAccountContext);
+    const { SmartAccountSigner, SmartAccountAPI, SmartAccountRPC, SmartAccountAddress } = useContext(SmartAccountContext);
 
     const execute = () => {
 
     };
 
-    return { execute, };
+    return { execute, SmartAccountAddress};
 }
 
 export default useAuth;
