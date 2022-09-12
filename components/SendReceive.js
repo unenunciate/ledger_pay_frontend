@@ -28,7 +28,7 @@ const SendReceive = ({ open, setOpen, tab }) => {
         document.addEventListener("mousedown", (event) => {
         if (backgroundRef.current !== null) {
             if (backgroundRef.current?.contains(event.target)) {
-            setOpen(false);
+                setOpen(false);
             }
         }
         });
@@ -36,9 +36,9 @@ const SendReceive = ({ open, setOpen, tab }) => {
         return () => {
         document.removeEventListener("mousedown", (event) => {
             if (backgroundRef.current !== null) {
-            if (backgroundRef.current?.contains(event.target)) {
-                setOpen(false);
-            }
+                if (backgroundRef.current?.contains(event.target)) {
+                    setOpen(false);
+                }
             }
         });
         };

@@ -1,116 +1,83 @@
 import { initStytch, StytchProvider } from '@stytch/stytch-react';
-import { createContext, useState, useMemo, useEffect} from 'react';
-import useUpdateEffect from '../hooks/useUpdateEffect';
-import { useCookies }  from 'react-cookie';
-import * as ethers from 'ethers';
-import axios from 'axios';
+
 import { isEmpty } from 'lodash';
 
-const AuthContext = createContext(null);
+import { createContext, useState, useMemo, useEffect } from 'react';
+import { useCookies }  from 'react-cookie';
 
-const temp = {profileImage:"https://pbs.twimg.com/profile_images/1438589426158952453/2qo7fieI_400x400.jpg", username: "", first_name: "", completedProfile: false};
+import { useQuery } from "@tanstack/react-query";
+import { getUserFromStytch } from '../utils/queries/users';
+
+import { useAccount, useConnect, useSigner } from 'wagmi';
+
+const AuthContext = createContext(null);
 
 const stytchOptions = {
     
 }
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({});
-
-    const [wallet, setWallet] = useState({});
-    const [provider, setProvider] = useState(ethers.getDefaultProvider('https://polygon-mumbai.gateway.pokt.network/v1/lb/62ff2f0b852035003a873a88'));
-    const [repolled, setRepolled] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const stytch = useMemo(() => (initStytch(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN, stytchOptions)), [stytchOptions]);
+    const [stytchUUID, setStytchUUID] = useState(() => !isEmpty(cookies.user) ? cookies.user.stytches[0]: null);
+
+    const { isLoading: userIsLoading } = useQuery(['user', stytchUUID], getUserFromStytch, {
+        onSuccess: (response) => updateUser(response.data.user),
+        enabled: isEmpty(user) && stytchUUID && isEmpty(cookies.user)
+    });
+
+    useQuery(['user', user.id], userLogout, {
+        onSuccess: (response) => setUser({}),
+        enabled: !isEmpty(user) && isEmpty(cookies.user)
+    });
+
+    const { address: EOA } = useAccount();
+    const { connectAsync, connectors } = useConnect();
 
     useEffect(() => {
-        if(cookies.user?.id !== user?.id || !isEmpty(cookies.user) && isEmpty(user) || repolled) {
-            console.log(cookies.user);
+        if(cookies.user?.id !== user?.id || !isEmpty(cookies.user) && isEmpty(user)) {
             setUser(cookies.user);
-            setRepolled(false);
         }
     }, [cookies]);
-    
-
-    useUpdateEffect(() => {
-        if(user?.sessionWithWallet) {
-            const signer = ethers.Signer.connect(provider);
-            signer.connect(provider)
-            setWallet(signer);
-        }
-    }, [user])
-
-    const triggerEmailLogin = async (email) => {
-
-        const req = await fetch(`${process.env.NEXT_PUBLIC_NEXT_URL}/api/connect`, {
-            url: `${process.env.NEXT_PUBLIC_NEXT_URL}/api/connect/index`,
-            method: 'POST',
-            body: JSON.stringify({
-              email,
-            })
-        });
-
-        if(req.status === 200) {
-          //  const data = JSON.parse(req.body);
-          //  listenForConnection(data.sessionId);
-        } else {
-           console.log({message: JSON.stringify(req.status)});
-        }
-    };
-
-    const listenForConnection = async (sessionId) => {
-        //TO DO: setup socket to listen to next for when next recieves callback from stytch then set cookie
-    }
 
     const triggerEthereumLogin = async () => {
         /* Request user's wallet address */
-        const [crypto_wallet_address] = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-        });
-
+        const { address } = await connectAsync();
         /* Ask Stytch to generate a challenge for the user */
         const { challenge } = await stytch.cryptoWallets.authenticateStart({
-        crypto_wallet_address,
-        crypto_wallet_type: 'ethereum',
+            crypto_wallet_address: address,
+            crypto_wallet_type: 'ethereum',
         });
 
         /* Ask the user's browser to sign the challenge */
-        const signature = await window.ethereum.request({
-        method: 'personal_sign',
-        params: [challenge, crypto_wallet_address],
-        });
+        const signature = await signer.signMessage(
+             [challenge, crypto_wallet_address]
+        );
 
         /* Send the signature back to Stytch for validation */
         const s = await stytch.cryptoWallets.authenticate({
-            crypto_wallet_address,
+            crypto_wallet_address: address,
             crypto_wallet_type: 'ethereum',
             signature,
             session_duration_minutes: 120,
         });
 
-        const registerURL = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/findFromStytchID?stytchId=${s.user_id}&stytchAuthMethod=Wallet&authIdentifier=${crypto_wallet_address}`;
-        //const req = await fetch(registerURL, {method: "POST", url: registerURL, data: JSON.stringify({stytchId: s.data.id})});
-        const req = await axios(registerURL);
-
-        console.log(req.data);
-   
-        setCookie('user', req.data?.user ? {...req.data.user, stytchStrapiId:req.data.id, sessionWithWallet: true} : { stytchStrapiId:req.data.id, sessionWithWallet: true }, {maxAge:120}); 
+        setStytchUUID(s.user_id);
     };
 
     const updateUser = (updates) => {
-        setRepolled(true);
-        setCookie('user', {...updates,...cookies.user}, {maxAge:120})
+        setCookie('user', {...updates, ...cookies.user}, {maxAge:120})
     }
 
     const disconnect = async () => {
         await stytch.session.revoke();
-        const req = await fetch({method: 'POST', url: `${NEXT_PUBLIC_NEXT_URL}/api/disconnect`});
         removeCookie('user', {});
     };
 
     return (
-        <AuthContext.Provider value={{user, setUser, stytch, wallet, triggerEmailLogin, triggerEthereumLogin, disconnect, updateUser}} >
+        <AuthContext.Provider value={{user, stytch, EOA, connectors, triggerEthereumLogin, disconnect, updateUser}} >
             <StytchProvider stytch={stytch}>
                 {children}
             </StytchProvider>

@@ -32,12 +32,11 @@ const Connect = () => {
               </button>
             </div>
 
-            <div  className="w-full h-0 border-t-2 border-purple-600" />
+            <div className="w-full h-0 border-t-2 border-purple-600" />
 
             <div className='flex justify-center w-full h-max'>
               <Link href="/connect/signup"><a className='relative w-2/3 py-2 font-bold text-center text-blue-400 bg-purple-600 shadow-md hover:shadow-purple-300 shadow-purple-600 rounded-xl text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75'>Signup</a></Link>
             </div>
-
         </div>
       </section>
     </div>

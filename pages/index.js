@@ -27,7 +27,6 @@ export default function Home() {
 
             <Header />
             
-           
             <section className="flex flex-col content-center min-h-[90vh] px-4 pb-12 pr-32 overflow-y-scroll style-scrollbar overscroll-contain remove-scrollbar pt-16 bg-gray-800 md:px-0 w-full">
                 <div className="flex flex-col items-center w-full px-5 mx-auto space-y-12 text-center lg:w-2/3">
                     <div className='flex flex-row w-full py-4 bg-gray-800 border-2 border-purple-600 h-[140px] rounded-xl shadow-sm text-blue-400 shadow-purple-600'>
