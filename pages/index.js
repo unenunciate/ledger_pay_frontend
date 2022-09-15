@@ -62,7 +62,7 @@ export default function Home() {
                         </div>
 
                         <div className='flex flex-col items-center justify-center w-1/2 max-h'>
-                                <span>{isLoading ? 0 : walletPriceHistory?.items?.length}</span>
+                                <span>{isLoading ? 0 : walletPriceHistory?.items?.length ?? 0}</span>
                                 <span>Amount Assets</span>
                         </div>
                     </div>
