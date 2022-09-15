@@ -1,15 +1,30 @@
 import Head from 'next/head';
-import Image from 'next/image';
 
 import SendReceive from '../components/SendReceive';
 import BuySellSwap from '../components/BuySellSwap';
 
 import Header from '../components/Header';
+import CoinPanel from '../components/CoinPanel';
+
 import useAuth from '../hooks/useAuth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
+import { queryKeys } from '../utils/queries';
+import { getWalletPriceHistory } from '../utils/queries/covalent';
+
+const testAddress = '0xe0a95BdE2672bBD12263C31BF818384Ca4DFEa87';
 
 export default function Home() {
     useAuth();
+
+  //const {data: walletPriceHistory, isLoading } = useQuery(queryKeys.covalent.walletPriceHistory(user.smartAccountAddress, 8001), getWalletPriceHistory);
+    const {data: walletPriceHistory, isLoading } = useQuery(queryKeys.covalent.walletPriceHistory(8001, testAddress), getWalletPriceHistory, {
+        onSuccess: (res) => console.log(res)
+    });
+    
+    const [totalValue, setTotalValue] = useState(0);
+    const [coins, setCoins] = useState([]);
 
     const [openBSS, setOpenBSS] = useState(false);
     const [tabBSS, setTabBSS] = useState(0);
@@ -17,7 +32,18 @@ export default function Home() {
     const [openSR, setOpenSR] = useState(false);
     const [tabSR, setTabSR] = useState(0);
 
-    const d = { assets: {totalValue: 100, amountAssets: 2}};
+    useEffect( () => {
+        if(isLoading === false) {
+            if(walletPriceHistory?.items?.length > 0) {
+                setCoins(walletPriceHistory.items)
+                let total = 0;
+                for(i = 0; i < walletPriceHistory.items.length; i++) {
+                    total += walletPriceHistory.items[i].quote;
+                }
+                setTotalValue(total);
+            }
+        }
+    }, [isLoading])
 
     return (
         <div className='w-full h-full'>
@@ -31,13 +57,13 @@ export default function Home() {
                 <div className="flex flex-col items-center w-full px-5 mx-auto space-y-12 text-center lg:w-2/3">
                     <div className='flex flex-row w-full py-4 bg-gray-800 border-2 border-purple-600 h-[140px] rounded-xl shadow-sm text-blue-400 shadow-purple-600'>
                         <div className='flex flex-col items-center justify-center w-1/2 border-r-2 border-purple-600 max-h'>
-                                <span>${d.assets.totalValue}</span>
+                                <span>${isLoading ? 0 : totalValue}</span>
                                 <span>Total Assets</span>
                         </div>
 
                         <div className='flex flex-col items-center justify-center w-1/2 max-h'>
-                                <span>{d.assets.amountAssets}</span>
-                                <span>Amount of Assets</span>
+                                <span>{isLoading ? 0 : walletPriceHistory?.items?.length}</span>
+                                <span>Amount Assets</span>
                         </div>
                     </div>
                     <div className='flex flex-row justify-around w-full'>
@@ -171,6 +197,14 @@ export default function Home() {
                 
                 <SendReceive open={openSR} setOpen={setOpenSR} tab={tabSR} />
                 <BuySellSwap open={openBSS} setOpen={setOpenBSS} tab={tabBSS} />
+
+                <div className='flex flex-col w-full'>
+                    {
+                        coins.map((coin, idx) => {
+                            <CoinPanel coin={coin} key={idx} />
+                        })
+                    }
+                </div>
             </section>
         </div>
     )

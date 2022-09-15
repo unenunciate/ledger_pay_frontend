@@ -563,6 +563,11 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
+"@lukemorales/query-key-factory@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@lukemorales/query-key-factory/-/query-key-factory-0.6.0.tgz#2961eafb10569d6f55042b48a93cf3c444624acf"
+  integrity sha512-eBoHZNyABj0vrRb46+TuMtaZP2OPXO0cvMj8DeJYF9d34Vh58lxuuL0rEeV+pvffeYVGUlK9xIbF1kSUCaAt8w==
+
 "@metamask/safe-event-emitter@2.0.0", "@metamask/safe-event-emitter@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@metamask/safe-event-emitter/-/safe-event-emitter-2.0.0.tgz#af577b477c683fad17c619a78208cede06f9605c"

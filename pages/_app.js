@@ -18,7 +18,7 @@ import { NotificationProvider } from "../contexts/notification";
 
 import { useState } from 'react';
 
-import { createClient, configureChains, defaultChains, createStorage } from 'wagmi';
+import { createClient, configureChains, defaultChains } from 'wagmi';
 
 import { publicProvider } from 'wagmi/providers/public';
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -39,8 +39,7 @@ const App = ({ Component, pageProps }) => {
         },
       }),
     ],
-    provider,
-    storage: createStorage({ storage: window.localStorage }),
+    provider
   }));
 
   return (
@@ -48,13 +47,13 @@ const App = ({ Component, pageProps }) => {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <WagmiClientProvider client={wagmiClient} >
-            <AuthProvider>
-              <SmartAccountProvider>
-                <NotificationProvider>
+            <NotificationProvider>
+              <AuthProvider>
+                <SmartAccountProvider>
                   <Component {...pageProps} />
-                </NotificationProvider>
-              </SmartAccountProvider>
-            </AuthProvider>
+                </SmartAccountProvider>
+              </AuthProvider>
+            </NotificationProvider>
           </WagmiClientProvider>
         </Hydrate>
         <ReactQueryDevtools />

@@ -23,16 +23,19 @@ const AuthProvider = ({ children }) => {
     const stytch = useMemo(() => (initStytch(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN, stytchOptions)), [stytchOptions]);
     const [stytchUUID, setStytchUUID] = useState(() => !isEmpty(cookies.user) ? cookies.user.stytches[0]: null);
 
+    const shouldUserBeFetched = useMemo(() => (isEmpty(user) && stytchUUID && isEmpty(cookies.user)), [user, stytchUUID, cookies])
     const { isLoading: userIsLoading } = useQuery(['user', stytchUUID], getUserFromStytch, {
         onSuccess: (response) => updateUser(response.data.user),
-        enabled: isEmpty(user) && stytchUUID && isEmpty(cookies.user)
+        enabled: shouldUserBeFetched ?? false
     });
 
+    /** 
+    const shouldLogoutBePosted = useMemo(() => (!isEmpty(user) && isEmpty(cookies.user)), [user, cookies]);
     useQuery(['user', user.id], userLogout, {
         onSuccess: (response) => setUser({}),
-        enabled: !isEmpty(user) && isEmpty(cookies.user)
+        enabled: shouldLogoutBePosted ?? false
     });
-
+    */
     const { address: EOA } = useAccount();
     const { connectAsync, connectors } = useConnect();
 

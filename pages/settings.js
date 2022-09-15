@@ -16,7 +16,7 @@ const WorldIDWidget = dynamic<WidgetProps>(
 
 const Settings = ({d}) => {
     const { user } = useAuth(true);
-    const { enable, response } = useWorldId();
+    const { enable, response, updateAction } = useWorldId();
 
     return (
         <div className='h-full w-full'>
@@ -28,7 +28,7 @@ const Settings = ({d}) => {
 
             <div className='min-h-screen w-full justify-center items-center bg-gray-800'>
                 <section className='max-h w-full md:w-3/4 xl:w-1/2'>
-                
+
 
                     <WorldIDWidget
                         actionId="wid_BPZsRJANxct2cZxVRyh80SFG" // obtain this from developer.worldcoin.org
