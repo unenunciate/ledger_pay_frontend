@@ -13,15 +13,19 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../utils/queries';
 import { getWalletPriceHistory } from '../utils/queries/covalent';
 
+import currency  from 'currency.js';
+
 const testAddress = '0xe0a95BdE2672bBD12263C31BF818384Ca4DFEa87';
 
 export default function Home() {
     useAuth();
 
   //const {data: walletPriceHistory, isLoading } = useQuery(queryKeys.covalent.walletPriceHistory(user.smartAccountAddress, 8001), getWalletPriceHistory);
-    const {data: walletPriceHistory, isLoading } = useQuery(queryKeys.covalent.walletPriceHistory(8001, testAddress), getWalletPriceHistory, {
+    const {data: walletPriceHistory, isLoading } = useQuery(queryKeys.covalent.walletPriceHistory(137, testAddress), getWalletPriceHistory, {
         onSuccess: (res) => console.log(res)
     });
+
+    const USD = value => currency(value, { symbol: "$", precision: 2 });
     
     const [totalValue, setTotalValue] = useState(0);
     const [coins, setCoins] = useState([]);
@@ -34,21 +38,24 @@ export default function Home() {
 
     useEffect( () => {
         if(isLoading === false) {
-            if(walletPriceHistory?.items?.length > 0) {
-                setCoins(walletPriceHistory.items)
+            if(walletPriceHistory?.data?.items?.length > 0) {
+                console.debug(`Price history ${JSON.stringify(walletPriceHistory)}`);
+                setCoins(walletPriceHistory.data.items)
+
                 let total = 0;
-                for(i = 0; i < walletPriceHistory.items.length; i++) {
-                    total += walletPriceHistory.items[i].quote;
+                for(let i = 0; i < walletPriceHistory.data.items.length; i++) {
+                    total += walletPriceHistory.data.items[i].holdings[0].close.quote;
                 }
+
                 setTotalValue(total);
             }
         }
-    }, [isLoading])
+    }, [isLoading, walletPriceHistory])
 
     return (
         <div className='w-full h-full'>
             <Head>
-                <title>LedgerPay - Pay On Your Terms</title>
+                <title>LedgePay - Pay On Your Terms</title>
             </Head>
 
             <Header />
@@ -57,12 +64,12 @@ export default function Home() {
                 <div className="flex flex-col items-center w-full px-5 mx-auto space-y-12 text-center lg:w-2/3">
                     <div className='flex flex-row w-full py-4 bg-gray-800 border-2 border-purple-600 h-[140px] rounded-xl shadow-sm text-blue-400 shadow-purple-600'>
                         <div className='flex flex-col items-center justify-center w-1/2 border-r-2 border-purple-600 max-h'>
-                                <span>${isLoading ? 0 : totalValue}</span>
+                                <span>{isLoading ? USD(0).format(true) : USD(totalValue).format(true)}</span>
                                 <span>Total Assets</span>
                         </div>
 
                         <div className='flex flex-col items-center justify-center w-1/2 max-h'>
-                                <span>{isLoading ? 0 : walletPriceHistory?.items?.length ?? 0}</span>
+                                <span>{isLoading ? 0 : walletPriceHistory?.data?.items?.length ?? 0}</span>
                                 <span>Amount Assets</span>
                         </div>
                     </div>
@@ -200,8 +207,8 @@ export default function Home() {
 
                 <div className='flex flex-col w-full'>
                     {
-                        coins.map((coin, idx) => {
-                            <CoinPanel coin={coin} key={idx} />
+                        coins.map((coin) => {
+                            <CoinPanel coin={coin} />
                         })
                     }
                 </div>

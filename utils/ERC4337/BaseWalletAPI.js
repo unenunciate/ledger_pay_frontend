@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { ethers, BigNumber } from 'ethers';
 import { EntryPoint__factory } from '@account-abstraction/contracts';
 import { resolveProperties } from 'ethers/lib/utils';
@@ -40,125 +31,106 @@ export class BaseWalletAPI {
         // factory "connect" define the contract address. the contract "connect" defines the "from" address.
         this.entryPointView = EntryPoint__factory.connect(entryPointAddress, provider).connect(ethers.constants.AddressZero);
     }
-    init() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.getWalletAddress();
-            return this;
-        });
+    async init() {
+        await this.getWalletAddress();
+        return this;
     }
     /**
      * check if the wallet is already deployed.
      */
-    checkWalletPhantom() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.isPhantom) {
-                // already deployed. no need to check anymore.
-                return this.isPhantom;
-            }
-            const senderAddressCode = yield this.provider.getCode(this.getWalletAddress());
-            if (senderAddressCode.length > 2) {
-                console.log(`SimpleWallet Contract already deployed at ${this.senderAddress}`);
-                this.isPhantom = false;
-            }
-            else {
-                // console.log(`SimpleWallet Contract is NOT YET deployed at ${this.senderAddress} - working in "phantom wallet" mode.`)
-            }
+    async checkWalletPhantom() {
+        if (!this.isPhantom) {
+            // already deployed. no need to check anymore.
             return this.isPhantom;
-        });
+        }
+        const senderAddressCode = await this.provider.getCode(this.getWalletAddress());
+        if (senderAddressCode.length > 2) {
+            console.log(`SimpleWallet Contract already deployed at ${this.senderAddress}`);
+            this.isPhantom = false;
+        }
+        else {
+            // console.log(`SimpleWallet Contract is NOT YET deployed at ${this.senderAddress} - working in "phantom wallet" mode.`)
+        }
+        return this.isPhantom;
     }
     /**
      * calculate the wallet address even before it is deployed
      */
-    getCounterFactualAddress() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const initCode = this.getWalletInitCode();
-            // use entryPoint to query wallet address (factory can provide a helper method to do the same, but
-            // this method attempts to be generic
-            return yield this.entryPointView.callStatic.getSenderAddress(initCode);
-        });
+    async getCounterFactualAddress() {
+        const initCode = this.getWalletInitCode();
+        // use entryPoint to query wallet address (factory can provide a helper method to do the same, but
+        // this method attempts to be generic
+        return await this.entryPointView.callStatic.getSenderAddress(initCode);
     }
     /**
      * return initCode value to into the UserOp.
      * (either deployment code, or empty hex if contract already deployed)
      */
-    getInitCode() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (yield this.checkWalletPhantom()) {
-                return yield this.getWalletInitCode();
-            }
-            return '0x';
-        });
+    async getInitCode() {
+        if (await this.checkWalletPhantom()) {
+            return await this.getWalletInitCode();
+        }
+        return '0x';
     }
     /**
      * return maximum gas used for verification.
      * NOTE: createUnsignedUserOp will add to this value the cost of creation, if the wallet is not yet created.
      */
-    getVerificationGasLimit() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return 100000;
-        });
+    async getVerificationGasLimit() {
+        return 100000;
     }
     /**
      * should cover cost of putting calldata on-chain, and some overhead.
      * actual overhead depends on the expected bundle size
      */
-    getPreVerificationGas(userOp) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const bundleSize = 1;
-            const cost = 21000;
-            // TODO: calculate calldata cost
-            return Math.floor(cost / bundleSize);
-        });
+    async getPreVerificationGas(userOp) {
+        const bundleSize = 1;
+        const cost = 21000;
+        // TODO: calculate calldata cost
+        return Math.floor(cost / bundleSize);
     }
-    encodeUserOpCallDataAndGasLimit(detailsForUserOp) {
-        var _a, _b;
-        return __awaiter(this, void 0, void 0, function* () {
-            function parseNumber(a) {
-                if (a == null || a === '')
-                    return null;
-                return BigNumber.from(a.toString());
-            }
-            const value = (_a = parseNumber(detailsForUserOp.value)) !== null && _a !== void 0 ? _a : BigNumber.from(0);
-            const callData = yield this.encodeExecute(detailsForUserOp.target, value, detailsForUserOp.data);
-            const callGasLimit = (_b = parseNumber(detailsForUserOp.gasLimit)) !== null && _b !== void 0 ? _b : yield this.provider.estimateGas({
-                from: this.entryPointAddress,
-                to: this.getWalletAddress(),
-                data: callData
-            });
-            return {
-                callData,
-                callGasLimit
-            };
+    async encodeUserOpCallDataAndGasLimit(detailsForUserOp) {
+        function parseNumber(a) {
+            if (a == null || a === '')
+                return null;
+            return BigNumber.from(a.toString());
+        }
+        const value = parseNumber(detailsForUserOp.value) ?? BigNumber.from(0);
+        const callData = await this.encodeExecute(detailsForUserOp.target, value, detailsForUserOp.data);
+        const callGasLimit = parseNumber(detailsForUserOp.gasLimit) ?? await this.provider.estimateGas({
+            from: this.entryPointAddress,
+            to: this.getWalletAddress(),
+            data: callData
         });
+        return {
+            callData,
+            callGasLimit
+        };
     }
     /**
      * return requestId for signing.
      * This value matches entryPoint.getRequestId (calculated off-chain, to avoid a view call)
      * @param userOp userOperation, (signature field ignored)
      */
-    getRequestId(userOp) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const op = yield resolveProperties(userOp);
-            const chainId = yield this.provider.getNetwork().then(net => net.chainId);
-            return getRequestId(op, this.entryPointAddress, chainId);
-        });
+    async getRequestId(userOp) {
+        const op = await resolveProperties(userOp);
+        const chainId = await this.provider.getNetwork().then(net => net.chainId);
+        return getRequestId(op, this.entryPointAddress, chainId);
     }
     /**
      * return the wallet's address.
      * this value is valid even before deploying the wallet.
      */
-    getWalletAddress() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.senderAddress == null) {
-                if (this.walletAddress != null) {
-                    this.senderAddress = this.walletAddress;
-                }
-                else {
-                    this.senderAddress = yield this.getCounterFactualAddress();
-                }
+    async getWalletAddress() {
+        if (this.senderAddress == null) {
+            if (this.walletAddress != null) {
+                this.senderAddress = this.walletAddress;
             }
-            return this.senderAddress;
-        });
+            else {
+                this.senderAddress = await this.getCounterFactualAddress();
+            }
+        }
+        return this.senderAddress;
     }
     /**
      * create a UserOperation, filling all details (except signature)
@@ -166,60 +138,60 @@ export class BaseWalletAPI {
      * - if gas or nonce are missing, read them from the chain (note that we can't fill gaslimit before the wallet is created)
      * @param info
      */
-    createUnsignedUserOp(info) {
-        var _a, _b;
-        return __awaiter(this, void 0, void 0, function* () {
-            const { callData, callGasLimit } = yield this.encodeUserOpCallDataAndGasLimit(info);
-            const initCode = yield this.getInitCode();
-            let verificationGasLimit = BigNumber.from(yield this.getVerificationGasLimit());
-            if (initCode.length > 2) {
-                // add creation to required verification gas
-                const initGas = yield this.entryPointView.estimateGas.getSenderAddress(initCode);
-                verificationGasLimit = verificationGasLimit.add(initGas);
+    async createUnsignedUserOp(info) {
+        const { callData, callGasLimit } = await this.encodeUserOpCallDataAndGasLimit(info);
+        const initCode = await this.getInitCode();
+        let verificationGasLimit = BigNumber.from(await this.getVerificationGasLimit());
+        if (initCode.length > 2) {
+            // add creation to required verification gas
+            const initGas = await this.entryPointView.estimateGas.getSenderAddress(initCode);
+            verificationGasLimit = verificationGasLimit.add(initGas);
+        }
+        let { maxFeePerGas, maxPriorityFeePerGas } = info;
+        if (maxFeePerGas == null || maxPriorityFeePerGas == null) {
+            const feeData = await this.provider.getFeeData();
+            if (maxFeePerGas == null) {
+                maxFeePerGas = feeData.maxFeePerGas ?? undefined;
             }
-            let { maxFeePerGas, maxPriorityFeePerGas } = info;
-            if (maxFeePerGas == null || maxPriorityFeePerGas == null) {
-                const feeData = yield this.provider.getFeeData();
-                if (maxFeePerGas == null) {
-                    maxFeePerGas = (_a = feeData.maxFeePerGas) !== null && _a !== void 0 ? _a : undefined;
-                }
-                if (maxPriorityFeePerGas == null) {
-                    maxPriorityFeePerGas = (_b = feeData.maxPriorityFeePerGas) !== null && _b !== void 0 ? _b : undefined;
-                }
+            if (maxPriorityFeePerGas == null) {
+                maxPriorityFeePerGas = feeData.maxPriorityFeePerGas ?? undefined;
             }
-            const partialUserOp = {
-                sender: this.getWalletAddress(),
-                nonce: this.getNonce(),
-                initCode,
-                callData,
-                callGasLimit,
-                verificationGasLimit,
-                maxFeePerGas,
-                maxPriorityFeePerGas
-            };
-            partialUserOp.paymasterAndData = this.paymasterAPI == null ? '0x' : yield this.paymasterAPI.getPaymasterAndData(partialUserOp);
-            return Object.assign(Object.assign({}, partialUserOp), { preVerificationGas: this.getPreVerificationGas(partialUserOp), signature: '' });
-        });
+        }
+        const partialUserOp = {
+            sender: this.getWalletAddress(),
+            nonce: this.getNonce(),
+            initCode,
+            callData,
+            callGasLimit,
+            verificationGasLimit,
+            maxFeePerGas,
+            maxPriorityFeePerGas
+        };
+        partialUserOp.paymasterAndData = this.paymasterAPI == null ? '0x' : await this.paymasterAPI.getPaymasterAndData(partialUserOp);
+        return {
+            ...partialUserOp,
+            preVerificationGas: this.getPreVerificationGas(partialUserOp),
+            signature: ''
+        };
     }
     /**
      * Sign the filled userOp.
      * @param userOp the UserOperation to sign (with signature field ignored)
      */
-    signUserOp(userOp) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const requestId = yield this.getRequestId(userOp);
-            const signature = this.signRequestId(requestId);
-            return Object.assign(Object.assign({}, userOp), { signature });
-        });
+    async signUserOp(userOp) {
+        const requestId = await this.getRequestId(userOp);
+        const signature = this.signRequestId(requestId);
+        return {
+            ...userOp,
+            signature
+        };
     }
     /**
      * helper method: create and sign a user operation.
      * @param info transaction details for the userOp
      */
-    createSignedUserOp(info) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.signUserOp(yield this.createUnsignedUserOp(info));
-        });
+    async createSignedUserOp(info) {
+        return await this.signUserOp(await this.createUnsignedUserOp(info));
     }
 }
 //# sourceMappingURL=BaseWalletAPI.js.map

@@ -1,11 +1,11 @@
-import { BigNumberish } from 'ethers';
+import { BigNumberish, ethers } from 'ethers';
 import { TransactionRequest } from '@ethersproject/abstract-provider';
 /**
  * wrapper class for Arachnid's deterministic deployer
  * (deterministic deployer used by 'hardhat-deployer'. generates the same addresses as "hardhat-deploy")
  */
 export declare class DeterministicDeployer {
-    readonly provider: import("@ethersproject/providers").JsonRpcProvider;
+    readonly provider: ethers.providers.JsonRpcProvider;
     /**
      * return the address this code will get deployed to.
      * @param ctrCode constructor code to pass to CREATE2
@@ -24,7 +24,7 @@ export declare class DeterministicDeployer {
     deploymentSignerAddress: string;
     deploymentGasPrice: number;
     deploymentGasLimit: number;
-    constructor(provider?: import("@ethersproject/providers").JsonRpcProvider);
+    constructor(provider?: ethers.providers.JsonRpcProvider);
     isContractDeployed(address: string): Promise<boolean>;
     isDeployerDeployed(): Promise<boolean>;
     deployDeployer(): Promise<void>;

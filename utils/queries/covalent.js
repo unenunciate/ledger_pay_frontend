@@ -1,7 +1,7 @@
 import { covalentHeaders } from "./headers";
 
 const getCoinPriceHistory = async (chainId, address) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_COVALENT_API_URL}/pricing/historical_by_addresses_v2/${chainId}/USD/${address}/`, new Headers(covalentHeaders));
+    const response = await fetch(`${process.env.NEXT_PUBLIC_COVALENT_API_URL}/pricing/historical_by_addresses_v2/${chainId}/USD/${address}/`, { headers: covalentHeaders()});
 
     if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -11,7 +11,7 @@ const getCoinPriceHistory = async (chainId, address) => {
 }
 
 const getWalletPriceHistory = async ({queryKey}) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_COVALENT_API_URL}/${queryKey[2]}/address/${queryKey[3]}/portfolio_v2/`, { headers: new Headers(covalentHeaders)});
+    const response = await fetch(`${process.env.NEXT_PUBLIC_COVALENT_API_URL}/${queryKey[2]}/address/${queryKey[3]}/portfolio_v2/`, { headers: covalentHeaders()});
 
     if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -21,7 +21,7 @@ const getWalletPriceHistory = async ({queryKey}) => {
 }
 
 const getCoinsInWallet = async (chainId, address) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_COVALENT_API_URL}/${chainId}/address/${address}/balances_v2/`, new Headers(covalentHeaders));
+    const response = await fetch(`${process.env.NEXT_PUBLIC_COVALENT_API_URL}/${chainId}/address/${address}/balances_v2/`,  { headers: covalentHeaders()});
 
     if (!response.ok) {
         throw new Error('Network response was not ok');

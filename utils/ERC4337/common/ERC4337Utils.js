@@ -1,8 +1,7 @@
-var _a;
 import { arrayify, defaultAbiCoder, keccak256 } from 'ethers/lib/utils';
 import { abi as entryPointAbi } from '@account-abstraction/contracts/artifacts/IEntryPoint.json';
 // UserOperation is the first parameter of simulateValidation
-const UserOpType = (_a = entryPointAbi.find(entry => entry.name === 'simulateValidation')) === null || _a === void 0 ? void 0 : _a.inputs[0];
+const UserOpType = entryPointAbi.find(entry => entry.name === 'simulateValidation')?.inputs[0];
 function encode(typevalues, forSignature) {
     const types = typevalues.map(typevalue => typevalue.type === 'bytes' && forSignature ? 'bytes32' : typevalue.type);
     const values = typevalues.map((typevalue) => typevalue.type === 'bytes' && forSignature ? keccak256(typevalue.val) : typevalue.val);
@@ -30,7 +29,7 @@ export function packUserOp(op, forSignature = true) {
         };
         // console.log('hard-coded userOpType', userOpType)
         // console.log('from ABI userOpType', UserOpType)
-        let encoded = defaultAbiCoder.encode([userOpType], [Object.assign(Object.assign({}, op), { signature: '0x' })]);
+        let encoded = defaultAbiCoder.encode([userOpType], [{ ...op, signature: '0x' }]);
         // remove leading word (total length) and trailing word (zero-length signature)
         encoded = '0x' + encoded.slice(66, encoded.length - 64);
         return encoded;

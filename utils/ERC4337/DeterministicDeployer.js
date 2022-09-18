@@ -1,21 +1,11 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { hexConcat, hexlify, hexZeroPad, keccak256 } from 'ethers/lib/utils';
 /**
  * wrapper class for Arachnid's deterministic deployer
  * (deterministic deployer used by 'hardhat-deployer'. generates the same addresses as "hardhat-deploy")
  */
 export class DeterministicDeployer {
-    constructor(provider) {
+    constructor(provider = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com', { chainId: 137, name: 'polygon' })) {
         this.provider = provider;
         // from: https://github.com/Arachnid/deterministic-deployment-proxy
         this.proxyAddress = '0x4e59b44847b379578588920ca78fbf26c0b4956c';
@@ -29,10 +19,8 @@ export class DeterministicDeployer {
      * @param ctrCode constructor code to pass to CREATE2
      * @param salt optional salt. defaults to zero
      */
-    static getAddress(ctrCode, salt = 0) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield DeterministicDeployer.instance.getDeterministicDeployAddress(ctrCode, salt);
-        });
+    static async getAddress(ctrCode, salt = 0) {
+        return await DeterministicDeployer.instance.getDeterministicDeployAddress(ctrCode, salt);
     }
     /**
      * deploy the contract, unless already deployed
@@ -40,76 +28,62 @@ export class DeterministicDeployer {
      * @param salt optional salt. defaults to zero
      * @return the deployed address
      */
-    static deploy(ctrCode, salt = 0) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield DeterministicDeployer.instance.deterministicDeploy(ctrCode, salt);
-        });
+    static async deploy(ctrCode, salt = 0) {
+        return await DeterministicDeployer.instance.deterministicDeploy(ctrCode, salt);
     }
-    isContractDeployed(address) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.provider.getCode(address).then(code => code.length > 2);
-        });
+    async isContractDeployed(address) {
+        return await this.provider.getCode(address).then(code => code.length > 2);
     }
-    isDeployerDeployed() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.isContractDeployed(this.proxyAddress);
-        });
+    async isDeployerDeployed() {
+        return await this.isContractDeployed(this.proxyAddress);
     }
-    deployDeployer() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (yield this.isContractDeployed(this.proxyAddress)) {
-                return;
-            }
-            const bal = yield this.provider.getBalance(this.deploymentSignerAddress);
-            const neededBalance = BigNumber.from(this.deploymentGasLimit).mul(this.deploymentGasPrice);
-            const signer = this.provider.getSigner();
-            if (bal.lt(neededBalance)) {
-                yield signer.sendTransaction({
-                    to: this.deploymentSignerAddress,
-                    value: neededBalance,
-                    gasLimit: this.deploymentGasLimit
-                });
-            }
-            yield this.provider.send('eth_sendRawTransaction', [this.deploymentTransaction]);
-            if (!(yield this.isContractDeployed(this.proxyAddress))) {
-                throw new Error('raw TX didn\'t deploy deployer!');
-            }
-        });
+    async deployDeployer() {
+        if (await this.isContractDeployed(this.proxyAddress)) {
+            return;
+        }
+        const bal = await this.provider.getBalance(this.deploymentSignerAddress);
+        const neededBalance = BigNumber.from(this.deploymentGasLimit).mul(this.deploymentGasPrice);
+        const signer = this.provider.getSigner();
+        if (bal.lt(neededBalance)) {
+            await signer.sendTransaction({
+                to: this.deploymentSignerAddress,
+                value: neededBalance,
+                gasLimit: this.deploymentGasLimit
+            });
+        }
+        await this.provider.send('eth_sendRawTransaction', [this.deploymentTransaction]);
+        if (!await this.isContractDeployed(this.proxyAddress)) {
+            throw new Error('raw TX didn\'t deploy deployer!');
+        }
     }
-    getDeployTransaction(ctrCode, salt = 0) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.deployDeployer();
-            const saltEncoded = hexZeroPad(hexlify(salt), 32);
-            return {
-                to: this.proxyAddress,
-                data: hexConcat([
-                    saltEncoded,
-                    ctrCode
-                ])
-            };
-        });
-    }
-    getDeterministicDeployAddress(ctrCode, salt = 0) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // this method works only before the contract is already deployed:
-            // return await this.provider.call(await this.getDeployTransaction(ctrCode, salt))
-            const saltEncoded = hexZeroPad(hexlify(salt), 32);
-            return '0x' + keccak256(hexConcat([
-                '0xff',
-                this.proxyAddress,
+    async getDeployTransaction(ctrCode, salt = 0) {
+        await this.deployDeployer();
+        const saltEncoded = hexZeroPad(hexlify(salt), 32);
+        return {
+            to: this.proxyAddress,
+            data: hexConcat([
                 saltEncoded,
-                keccak256(ctrCode)
-            ])).slice(-40);
-        });
+                ctrCode
+            ])
+        };
     }
-    deterministicDeploy(ctrCode, salt = 0) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const addr = yield this.getDeterministicDeployAddress(ctrCode, salt);
-            if (!(yield this.isContractDeployed(addr))) {
-                yield this.provider.getSigner().sendTransaction(yield this.getDeployTransaction(ctrCode, salt));
-            }
-            return addr;
-        });
+    async getDeterministicDeployAddress(ctrCode, salt = 0) {
+        // this method works only before the contract is already deployed:
+        // return await this.provider.call(await this.getDeployTransaction(ctrCode, salt))
+        const saltEncoded = hexZeroPad(hexlify(salt), 32);
+        return '0x' + keccak256(hexConcat([
+            '0xff',
+            this.proxyAddress,
+            saltEncoded,
+            keccak256(ctrCode)
+        ])).slice(-40);
+    }
+    async deterministicDeploy(ctrCode, salt = 0) {
+        const addr = await this.getDeterministicDeployAddress(ctrCode, salt);
+        if (!await this.isContractDeployed(addr)) {
+            await this.provider.getSigner().sendTransaction(await this.getDeployTransaction(ctrCode, salt));
+        }
+        return addr;
     }
 }
 DeterministicDeployer.instance = new DeterministicDeployer();
