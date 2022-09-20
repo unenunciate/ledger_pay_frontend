@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 
 const useAuth = (required = false) => {
     const router = useRouter();
-    const {user, stytch, triggerEthereumLogin, wallet, triggerEmailLogin, disconnect, updateUser} = useContext(AuthContext);
+    const {user, stytch, EOA, triggerEthereumLogin, disconnect, updateUser, modalIsOpen, closeModal, setRecoveryMode, recoveryMode} = useContext(AuthContext);
 
     useEffect(() => {
         if(required) {
@@ -15,7 +15,7 @@ const useAuth = (required = false) => {
         }
     }, [user]); 
 
-    return { disconnect, user, triggerEthereumLogin, wallet, triggerEmailLogin, updateUser};
+    return { disconnect, user, triggerEthereumLogin, updateUser, modalIsOpen, closeModal, setRecoveryMode, recoveryMode};
 }
 
 export default useAuth;

@@ -33,8 +33,6 @@ const CoinPanel = ({coin}) => {
         return toNumber(s);
     };
 
-    const cssForImage = { width: '100%', height: 'auto' };
-
     const balance = getbalance();
 
     const change = Math.abs(coin.holdings[0].quote_rate - coin.holdings[coin.holdings.length - 1].quote_rate / coin.holdings[coin.holdings.length - 1].quote_rate);
@@ -46,14 +44,14 @@ const CoinPanel = ({coin}) => {
         <div className="flex flex-row w-full items-center justify-between py-2 px-6 bg-gray-800 border-2 border-purple-600 h-32 rounded-xl shadow-sm text-blue-400 shadow-purple-600">
             <div className="flex flex-row w-1/5 justify-between items-center px-8 ">
                 <div className='rounded-full border-1 border-purple-600 h-8 w-8 shadow-sm shadow-purple-600'>
-                    <Image src={coin.logo_url} sizes="100vw" style={cssForImage} />
+                    <Image className="w-full h-auto" src={coin.logo_url} width={32} height={32} />
                 </div>
                 
                 <span>{coin.contract_name}</span>
             </div>
 
             <div className="flex flex-row w-1/5 justify-between items-center">
-                <XYPlot width={256} height={96}>
+                <XYPlot width={180} height={96}>
                     <LineSeries
                         curve={'curveMonotoneX'}
                         data={chartData}
@@ -79,9 +77,3 @@ const CoinPanel = ({coin}) => {
 }
 
 export default CoinPanel;
-/*
-<LineSeries
-                        curve={'curveMonotoneX'}
-                        data={chartData}
-                        color={chartColor}
-                    /> **/

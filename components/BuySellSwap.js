@@ -14,12 +14,22 @@ const networks = [
     {id: 0, name: 'Polygon', icon: {url: '/polygon.png'}},
 ]
 
+const exchanges = [
+    {id: 0, name: 'SushiSwap', icon: {url: '/sushi.png'}},
+]
+
+const paymentMethods = [
+    {id: 0, nickname: 'VISA ending in 0111', icon: {url: '/visa.png'}},
+]
+
 const BuySellSwap = ({ open, setOpen, tab }) => {
 
     const [selectedCrypto, setSelectedCrypto] = useState(cryptos[1]);
     const [selectedForCrypto, setSelectedForCrypto] = useState(cryptos[0]);
 
     const [selectedNetwork, setSelectedNetwork] = useState(networks[0]);
+    const [selectedExchange, setSelectedExchange] = useState(exchanges[0]);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(paymentMethods[0]);
 
     const [dollarAmount, setDollarAmount] = useState(0);
 
@@ -27,19 +37,19 @@ const BuySellSwap = ({ open, setOpen, tab }) => {
 
     useEffect(() => {
         document.addEventListener("mousedown", (event) => {
-        if (backgroundRef.current !== null) {
-            if (backgroundRef.current?.contains(event.target)) {
-            setOpen(false);
+            if (backgroundRef.current !== null) {
+                if (backgroundRef.current?.contains(event.target)) {
+                setOpen(false);
+                }
             }
-        }
         });
 
         return () => {
         document.removeEventListener("mousedown", (event) => {
             if (backgroundRef.current !== null) {
-            if (backgroundRef.current?.contains(event.target)) {
-                setOpen(false);
-            }
+                if (backgroundRef.current?.contains(event.target)) {
+                    setOpen(false);
+                }
             }
         });
         };
@@ -180,6 +190,66 @@ const BuySellSwap = ({ open, setOpen, tab }) => {
                                                                 </Listbox.Option>
                                                             ))}
                                                         </Listbox.Options>
+
+
+                                                        
+                                                    </Transition>
+                                                </div>
+                                            </Listbox>
+
+                                            <Listbox value={selectedPaymentMethod} onChange={setSelectedPaymentMethod}>
+                                                <div className="relative flex flex-col mt-1 space-y-2">
+                                                    <Listbox.Label className="h-full py-2 text-center bg-gray-700 rounded-lg w-64">Payment Method</Listbox.Label>
+                                                    <Listbox.Button className="relative flex items-center w-full py-2 pl-3 pr-10 text-left bg-gray-700 rounded-lg cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 sm:text-sm">
+                                                        <Image src={selectedPaymentMethod.icon.url} width={16} height={16} layout="fixed" />
+                                                        <span className="flex ml-3 truncate">{selectedPaymentMethod.nickname}</span>
+                                                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                            <ChevronUpDownIcon
+                                                                className="w-5 h-5 text-gray-400"
+                                                                aria-hidden="true"
+                                                            />
+                                                        </span>
+                                                    </Listbox.Button>
+                                                    <Transition
+                                                        as={Fragment}
+                                                        leave="transition ease-in duration-100"
+                                                        leaveFrom="opacity-100"
+                                                        leaveTo="opacity-0"
+                                                    >
+                                                        <Listbox.Options className="absolute flex flex-col items-start w-full py-1 mt-1 overflow-auto text-base bg-gray-700 rounded-md shadow-lg max-h-60 ring-1 ring-purple-600 ring-opacity-5 focus:outline-none sm:text-sm">
+                                                            {paymentMethods.map((paymentMethod, paymentMethodIdx) => (
+                                                                <Listbox.Option
+                                                                    key={paymentMethodIdx}
+                                                                    className={({ active }) =>
+                                                                        `relative w-full flex cursor-default select-none py-2 pl-10 pr-4 ${
+                                                                        active ? 'bg-gray-400 text-purple-600' : 'text-blue-400'
+                                                                        }`
+                                                                    }
+                                                                    value={paymentMethod}
+                                                                >
+                                                                {({ selected }) => (
+                                                                    <>
+                                                                        <Image src={paymentMethod.icon.url} width={16} height={16} layout="fixed" />
+                                                                        <span
+                                                                            className={`ml-3 truncate ${
+                                                                            selected ? 'font-medium' : 'font-normal'
+                                                                            }`}
+                                                                        >
+                                                                            {paymentMethod.nickname}
+                                                                        </span>
+                                                                        {selected ? (
+                                                                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                                                                                <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                                                            </span>
+                                                                        ) : null}
+                                                                    </>
+                                                                )}
+                                                                </Listbox.Option>
+                                                            ))}
+                                                        </Listbox.Options>
+
+
+                                                        
                                                     </Transition>
                                                 </div>
                                             </Listbox>
@@ -431,60 +501,115 @@ const BuySellSwap = ({ open, setOpen, tab }) => {
                                                     </Transition>
                                                 </div>
                                             </Listbox>
-
-                                            <Listbox value={selectedNetwork} onChange={setSelectedNetwork}>
-                                                <div className="relative flex flex-col mt-1 space-y-2">
-                                                    <Listbox.Label className="h-full py-2 text-center bg-gray-700 rounded-lg w-36">Network</Listbox.Label>
-                                                    <Listbox.Button className="relative flex items-center w-full py-2 pl-3 pr-10 text-left bg-gray-700 rounded-lg cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 sm:text-sm">
-                                                        <Image src={selectedNetwork.icon.url} width={16} height={16} layout="fixed" />
-                                                        <span className="flex ml-3 truncate">{selectedNetwork.name}</span>
-                                                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                            <ChevronUpDownIcon
-                                                                className="w-5 h-5 text-gray-400"
-                                                                aria-hidden="true"
-                                                            />
-                                                        </span>
-                                                    </Listbox.Button>
-                                                    <Transition
-                                                        as={Fragment}
-                                                        leave="transition ease-in duration-100"
-                                                        leaveFrom="opacity-100"
-                                                        leaveTo="opacity-0"
-                                                    >
-                                                        <Listbox.Options className="absolute flex flex-col items-start w-full py-1 mt-1 overflow-auto text-base bg-gray-700 rounded-md shadow-lg max-h-60 ring-1 ring-purple-600 ring-opacity-5 focus:outline-none sm:text-sm">
-                                                            {networks.map((network, networkIdx) => (
-                                                                <Listbox.Option
-                                                                    key={networkIdx}
-                                                                    className={({ active }) =>
-                                                                        `relative w-full flex cursor-default select-none py-2 pl-10 pr-4 ${
-                                                                        active ? 'bg-gray-400 text-purple-600' : 'text-blue-400'
-                                                                        }`
-                                                                    }
-                                                                    value={network}
-                                                                >
-                                                                {({ selected }) => (
-                                                                    <>
-                                                                        <Image src={network.icon.url} width={16} height={16} layout="fixed" />
-                                                                        <span
-                                                                            className={`ml-3 truncate ${
-                                                                            selected ? 'font-medium' : 'font-normal'
-                                                                            }`}
-                                                                        >
-                                                                            {network.name}
-                                                                        </span>
-                                                                        {selected ? (
-                                                                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
-                                                                                <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                            <div className="flex flex-row space-x-2">
+                                                <Listbox value={selectedNetwork} onChange={setSelectedNetwork}>
+                                                    <div className="relative flex flex-col mt-1 space-y-2">
+                                                        <Listbox.Label className="h-full py-2 text-center bg-gray-700 rounded-lg w-36">Network</Listbox.Label>
+                                                        <Listbox.Button className="relative flex items-center w-full py-2 pl-3 pr-10 text-left bg-gray-700 rounded-lg cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 sm:text-sm">
+                                                            <Image src={selectedNetwork.icon.url} width={16} height={16} layout="fixed" />
+                                                            <span className="flex ml-3 truncate">{selectedNetwork.name}</span>
+                                                            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                                <ChevronUpDownIcon
+                                                                    className="w-5 h-5 text-gray-400"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            </span>
+                                                        </Listbox.Button>
+                                                        <Transition
+                                                            as={Fragment}
+                                                            leave="transition ease-in duration-100"
+                                                            leaveFrom="opacity-100"
+                                                            leaveTo="opacity-0"
+                                                        >
+                                                            <Listbox.Options className="absolute flex flex-col items-start w-full py-1 mt-1 overflow-auto text-base bg-gray-700 rounded-md shadow-lg max-h-60 ring-1 ring-purple-600 ring-opacity-5 focus:outline-none sm:text-sm">
+                                                                {networks.map((network, networkIdx) => (
+                                                                    <Listbox.Option
+                                                                        key={networkIdx}
+                                                                        className={({ active }) =>
+                                                                            `relative w-full flex cursor-default select-none py-2 pl-10 pr-4 ${
+                                                                            active ? 'bg-gray-400 text-purple-600' : 'text-blue-400'
+                                                                            }`
+                                                                        }
+                                                                        value={network}
+                                                                    >
+                                                                    {({ selected }) => (
+                                                                        <>
+                                                                            <Image src={network.icon.url} width={16} height={16} layout="fixed" />
+                                                                            <span
+                                                                                className={`ml-3 truncate ${
+                                                                                selected ? 'font-medium' : 'font-normal'
+                                                                                }`}
+                                                                            >
+                                                                                {network.name}
                                                                             </span>
-                                                                        ) : null}
-                                                                    </>
-                                                                )}
-                                                                </Listbox.Option>
-                                                            ))}
-                                                        </Listbox.Options>
-                                                    </Transition>
-                                                </div>
-                                            </Listbox>
+                                                                            {selected ? (
+                                                                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                                                                                    <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                                                                </span>
+                                                                            ) : null}
+                                                                        </>
+                                                                    )}
+                                                                    </Listbox.Option>
+                                                                ))}
+                                                            </Listbox.Options>
+                                                        </Transition>
+                                                    </div>
+                                                </Listbox>
+
+                                                <Listbox value={selectedExchange} onChange={setSelectedExchange}>
+                                                    <div className="relative flex flex-col mt-1 space-y-2">
+                                                        <Listbox.Label className="h-full py-2 text-center bg-gray-700 rounded-lg w-36">Exchange</Listbox.Label>
+                                                        <Listbox.Button className="relative flex items-center w-full py-2 pl-3 pr-10 text-left bg-gray-700 rounded-lg cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 sm:text-sm">
+                                                            <Image src={selectedExchange.icon.url} width={16} height={16} layout="fixed" />
+                                                            <span className="flex ml-3 truncate">{selectedExchange.name}</span>
+                                                            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                                <ChevronUpDownIcon
+                                                                    className="w-5 h-5 text-gray-400"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            </span>
+                                                        </Listbox.Button>
+                                                        <Transition
+                                                            as={Fragment}
+                                                            leave="transition ease-in duration-100"
+                                                            leaveFrom="opacity-100"
+                                                            leaveTo="opacity-0"
+                                                        >
+                                                            <Listbox.Options className="absolute flex flex-col items-start w-full py-1 mt-1 overflow-auto text-base bg-gray-700 rounded-md shadow-lg max-h-60 ring-1 ring-purple-600 ring-opacity-5 focus:outline-none sm:text-sm">
+                                                                {exchanges.map((exchange, exchangeIdx) => (
+                                                                    <Listbox.Option
+                                                                        key={exchangeIdx}
+                                                                        className={({ active }) =>
+                                                                            `relative w-full flex cursor-default select-none py-2 pl-10 pr-4 ${
+                                                                            active ? 'bg-gray-400 text-purple-600' : 'text-blue-400'
+                                                                            }`
+                                                                        }
+                                                                        value={exchange}
+                                                                    >
+                                                                    {({ selected }) => (
+                                                                        <>
+                                                                            <Image src={exchange.icon.url} width={16} height={16} layout="fixed" />
+                                                                            <span
+                                                                                className={`ml-3 truncate ${
+                                                                                selected ? 'font-medium' : 'font-normal'
+                                                                                }`}
+                                                                            >
+                                                                                {exchange.name}
+                                                                            </span>
+                                                                            {selected ? (
+                                                                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">
+                                                                                    <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                                                                </span>
+                                                                            ) : null}
+                                                                        </>
+                                                                    )}
+                                                                    </Listbox.Option>
+                                                                ))}
+                                                            </Listbox.Options>
+                                                        </Transition>
+                                                    </div>
+                                                </Listbox>
+                                            </div>
                                         </div>
                                         <div className="flex flex-row items-center justify-center w-full h-1/4">
                                             

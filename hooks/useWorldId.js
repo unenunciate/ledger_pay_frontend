@@ -1,32 +1,43 @@
 import { useEffect, useState } from "react";
 import useSmartAccount from '../hooks/useSmartAccount';
-import SmartAccountABI from '../utils/contracts/abi/S'
-import { useContract, useSigner } from 'wagmi';
+//import SmartAccountABI from '../utils/contracts/abi/SmartContractWallet'
+import { useContract, useSigner } from '@web3modal/react';
 
-const useWorldId = ({ aprrove = false, revoke = false, recover = false, callback = null }) => {
+const useWorldId = ( approve = false, revoke = false, recover = false, setup = false, callback = null ) => {
     const [proof, setProof] = useState(null);
-    const [action, setAction] = useState(approve ? 'approve': revoke ? 'revoke' : recover ? 'recover' : null);
+    const [action, setAction] = useState(approve ? 'approve': revoke ? 'revoke' : recover ? 'recover' : setup ? 'setup' : null);
 
-    const {SmartAccountAddress} = useSmartAccount();
+    const { smartAccountAddress,  createUserOperation, executeOP } = useSmartAccount();
 
-    const {data: signer} = useSigner();
+    const { signer } = useSigner();
 
-    const {} = useContract(SmartAccountAddress, SmartAccountABI, signer);
+   // const {} = useContract(SmartAccountAddress, SmartAccountABI, signer);
   
     useEffect(() => {
+        if(action === "approve") {
+
+        } else if (action === "revoke") {
+
+        } else if (action === "recover") {
+
+        } else if (action === "setup") {
+            if(proof) {
+                const op = createUserOperation(smartAccountAddress, 0, {})
+                executeOP(op);
+                if(callback) {
+                    callback();
+                }
+            }
+        }
         
     }, [proof, action]);
 
     const onVerificationSuccess = (response) => {
         setProof(response);
-        
-        if (callback) {
-            callback();
-        }
     }
 
-    const updateAction = (a = false, rev = false, rec = false) => {
-        setAction(a ? 'approve': rev ? 'revoke' : rec ? 'recover' : null);
+    const updateAction = (a = false, rev = false, rec = false, s = false) => {
+        setAction(a ? 'approve': rev ? 'revoke' : rec ? 'recover' : s ? 'setup' : null);
     }
 
     return { proof, onVerificationSuccess, updateAction };

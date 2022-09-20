@@ -1,32 +1,35 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useMemo } from 'react';
 
 import { newProvider } from '../utils/ERC4337';
 
 import { ClientConfiguration } from '../utils/ClientConfiguration';
 
-import { useProvider, useSigner, chain, useAccount } from 'wagmi';
+import { useProvider } from 'wagmi';
+
+import { useSigner, useNetwork, useAccount } from '@web3modal/react';
 
 import useAuth from '../hooks/useAuth';
 
 const SmartAccountContext = createContext(null);
 
-const SmartAccountProvider = ({children}) => {
-    const { user } = useAuth();
+                               
 
-    const isConnected = user?.id ?? false;
+const SmartAccountProvider = ({provider, children}) => {
+    const { user, recoveryMode } = useAuth();
+    const { address, chainId } = useAccount();
 
-    const { address } = useAccount();
-    const { provider } = useProvider([chain.polygon]);
+    const isConnected = user?.id && address && !recoveryMode;
+
     const { signer } = useSigner();
 
-    const [SmartAccountAddress] = useState(user.smartAccountAddress);
+    const smartAccountAddress = '0x0'// useMemo(user?.smartAccountAddresses[chainId], [user, chainId]);
     
-    const SmartAccountProvider = useMemo(async () => isConnected ? provider && signer ? await newProvider(provider, ClientConfiguration, signer) : null : null, [isConnected, provider, signer]);
-    const SmartAccountSigner = useMemo(async () => isConnected ? SmartAccountProvider ? await SmartAccountProvider.getSigner() : null : null, [isConnected, SmartAccountProvider]);
-  //  const SmartAccountAPI = useMemo(() => isConnected ? SmartAccountProvider && SmartAccountSigner ? new SimpleWalletAPI(SmartAccountProvider, ClientConfiguration.entryPointAddress, SmartAccountAddress, SmartAccountSigner, address) : null : null, [isConnected, SmartAccountProvider, SmartAccountSigner]);
+    const smartAccountProvider = useMemo(async () => isConnected ? provider && signer ? await newProvider(provider, ClientConfiguration, signer) : null : null, [isConnected, provider, signer]);
+    const smartAccountSigner = useMemo(async () => isConnected ? smartAccountProvider ? await smartAccountProvider.getSigner() : null : null, [isConnected, smartAccountProvider]);
+  //  const smartAccountAPI = useMemo(() => isConnected ? smartAccountProvider && smartAccountSigner ? new SimpleWalletAPI(smartAccountProvider, ClientConfiguration.entryPointAddress, smartAccountAddress, smartAccountSigner, address) : null : null, [isConnected, smartAccountProvider, smartAccountSigner]);
 
     return (
-        <SmartAccountContext.Provider value={{SmartAccountSigner, SmartAccountProvider, SmartAccountAddress}} >
+        <SmartAccountContext.Provider value={{smartAccountSigner, smartAccountProvider, smartAccountAddress}} >
             {children}
         </SmartAccountContext.Provider>
     )

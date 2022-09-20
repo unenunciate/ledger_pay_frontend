@@ -8,53 +8,49 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
-import { WagmiConfig as WagmiClientProvider } from 'wagmi';
-import { SmartAccountProvider } from '../contexts/smartAccount';
+import { createClient, configureChains, defaultChains } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Web3ModalEthereum } from '@web3modal/ethereum';
+import { Web3ModalProvider } from '@web3modal/react';
 
 import { AuthProvider } from "../contexts/auth";
 import { NotificationProvider } from "../contexts/notification";
 
-import { useState } from 'react';
+import { SmartAccountProvider } from '../contexts/smartAccount';
 
-import { createClient, configureChains, defaultChains } from 'wagmi';
-
-import { publicProvider } from 'wagmi/providers/public';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const App = ({ Component, pageProps }) => {
-  const [ queryClient ] = useState(() => new QueryClient());
+  const queryClient = new QueryClient();
 
   const { chains, provider } = configureChains(defaultChains, [publicProvider()])
 
-  const [ wagmiClient ] = useState(() => createClient({
-    connectors: [
-      new InjectedConnector({ chains }),
-      new WalletConnectConnector({
-        chains,
-        options: {
-          qrcode: true,
-        },
-      }),
-    ],
+  const wagmiClient  = createClient({
+    autoConnect: true,
+    connectors:  Web3ModalEthereum.defaultConnectors({ chains, appName: 'web3Modal' }),
     provider
-  }));
+  });
+
+  const modalConfig = {
+    projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
+    theme: 'dark',
+    accentColor: 'magenta'
+  }
 
   return (
     <CookiesProvider>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          <WagmiClientProvider client={wagmiClient} >
+          <Web3ModalProvider config={modalConfig} ethereumClient={wagmiClient}>
             <NotificationProvider>
               <AuthProvider>
-                <SmartAccountProvider>
+                <SmartAccountProvider provider={provider} >
                   <Component {...pageProps} />
                 </SmartAccountProvider>
               </AuthProvider>
             </NotificationProvider>
-          </WagmiClientProvider>
+          </Web3ModalProvider>
         </Hydrate>
         <ReactQueryDevtools />
       </QueryClientProvider>

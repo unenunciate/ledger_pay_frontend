@@ -4,3 +4,5 @@ export const ClientConfiguration = {
     bundlerUrl: process.env.NEXT_PUBLIC_BUNDLER_URL,
     chainId: 8001,
 }
+
+

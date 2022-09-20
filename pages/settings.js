@@ -7,16 +7,18 @@ import Header from '../components/Header';
 import useAuth from '../hooks/useAuth';
 import useWorldId from '../hooks/useWorldId';
 
-import { WidgetProps } from "@worldcoin/id";
+import { useAccount } from '@web3modal/react';
 
-const WorldIDWidget = dynamic<WidgetProps>(
+const WorldIDWidget = dynamic(
     () => import("@worldcoin/id").then((mod) => mod.WorldIDWidget),
     { ssr: false }
 );
 
 const Settings = ({d}) => {
-    const { user } = useAuth(true);
-    const { enable, response, updateAction } = useWorldId();
+    const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } = useAuth();
+    const { updateAction, onVerificationSuccess } = useWorldId(false, false, false, user?.worldcoinSetup ? false : true);
+
+    const { address } = useAccount();
 
     return (
         <div className='h-full w-full'>
@@ -26,17 +28,44 @@ const Settings = ({d}) => {
 
             <Header />
 
-            <div className='min-h-screen w-full justify-center items-center bg-gray-800'>
-                <section className='max-h w-full md:w-3/4 xl:w-1/2'>
-
-
-                    <WorldIDWidget
-                        actionId="wid_BPZsRJANxct2cZxVRyh80SFG" // obtain this from developer.worldcoin.org
-                        signal="my_signal"
-                        enableTelemetry
-                        onSuccess={(verificationResponse) => console.log(verificationResponse)}
-                        onError={(error) => console.error(error)}
-                    />;
+            <div className='min-h-[90vh] w-full justify-center items-center bg-gray-800 flex'>
+                <section className='max-h w-full md:w-3/4 xl:w-1/2 justify-center items-center flex flex-col'>
+                    <div className='w-full justify-center items-center flex flex-col space-y-6 text-blue-400'>
+                    {
+                        user?.worldcoinSetup || true ?
+                            user?.worldcoinEnabled || true ?
+                                <>
+                                    <div className='flex flex-col space-y-2 justify-center items-center'>
+                                        <span>Worldcoin Recovery</span>
+                                        <button className='bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75' onClick={() => {
+                                            setRecoveryMode(true);
+                                            triggerEthereumLogin();
+                                        }}><span>Connect</span></button>
+                                        <button className='bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75' disabled={!recoveryMode} onClick={() => updateAction(false, false, true)}><span>Recover</span></button>
+                                        <button className='bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75' onClick={() => updateAction(false, true)}><span>Disable</span></button>
+                                    </div>
+                                    <div className='flex flex-col space-y-2 justify-center items-center'>
+                                        
+                                    </div>
+                               </>
+                                :
+                                <>
+                                    <span>Worldcoin Recovery</span>
+                                    <button className='bg-purple-600 rounded-xl flex justify-center items-center w-12 h-6' onClick={() => updateAction(true)}><span>Enable</span></button>
+                                </>
+                                :
+                            <>
+                                <span>Worldcoin Recovery</span>
+                                <WorldIDWidget
+                                    actionId={process.env.NEXT_PUBLIC_WORLD_ID_ACTION_ID}
+                                    signal={`${address}`}
+                                    enableTelemetry
+                                    onSuccess={(verificationResponse) => onVerificationSuccess(verificationResponse)}
+                                    onError={(error) => console.error(error)}
+                                />
+                            </>
+                    }
+                    </div>
                 </section>
             </div>
         </div>

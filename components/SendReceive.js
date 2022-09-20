@@ -183,7 +183,7 @@ const SendReceive = ({ open, setOpen, tab }) => {
                                             </Listbox>
                                             <div className="flex flex-col space-y-2">
                                                 <label className="h-full py-2 text-center text-blue-400 bg-gray-700 rounded-lg w-36">To</label>                      
-                                                <input className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-36 form-input focus:border-none focus:outline-none" placeholder="Address" disabled={false} type="text" value={address} onChange={(e) => setAddress(e.target.value)}/>
+                                                <input className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-36 form-input focus:border-none focus:outline-none" placeholder="Address" type="text" value={address} onChange={(e) => setAddress(e.target.value)}/>
                                             </div>     
                                         </div>
                                         <div className="flex flex-row items-center justify-center w-full h-1/4">
