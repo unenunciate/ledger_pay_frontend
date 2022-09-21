@@ -39,6 +39,7 @@ export class SimpleWalletAPI extends BaseWalletAPI {
      * this value holds the "factory" address, followed by this wallet's information
      */
     async getWalletInitCode() {
+        return "";
         if (this.factory == null) {
             if (this.factoryAddress != null && this.factoryAddress !== '') {
                 this.factory = SimpleWalletDeployer__factory.connect(this.factoryAddress, this.provider);

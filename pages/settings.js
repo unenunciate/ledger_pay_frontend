@@ -44,9 +44,7 @@ const Settings = ({d}) => {
                                         <button className='bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75' disabled={!recoveryMode} onClick={() => updateAction(false, false, true)}><span>Recover</span></button>
                                         <button className='bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75' onClick={() => updateAction(false, true)}><span>Disable</span></button>
                                     </div>
-                                    <div className='flex flex-col space-y-2 justify-center items-center'>
-                                        
-                                    </div>
+
                                </>
                                 :
                                 <>
@@ -66,6 +64,7 @@ const Settings = ({d}) => {
                             </>
                     }
                     </div>
+                    
                 </section>
             </div>
         </div>

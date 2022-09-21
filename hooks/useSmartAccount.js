@@ -1,40 +1,18 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { SmartAccountContext } from '../contexts/smartAccount';
 
 const useSmartAccount = () => {
-    const {  smartAccountSigner, smartAccountAddress } = useContext(SmartAccountContext);
-    const [ enqueuedOPs, setEnqueuedOPs ] = useState([]);
+    const { smartAccountAPI, bundlerClient, smartAccountAddress, configs, chainId } = useContext(SmartAccountContext);
 
-    const createUserOperation =  async  (to, value = 0, params = {}, addToQ = flase) => {
-        const op = await smartAccountAPI.encodeExecute(to, value, params);
-
-        if(addToQ) {
-            addToQueue(op);
-        }
-
-        return op;
-    };
-
-    //add way to send via extension then only as fallback send via RPC here
-    const executeOP = async (OP) => {
-        const result = await smartAccountSigner.sendTransaction(OP);
-
+    // add way to send via extension then only as fallback send via RPC here
+    // transaction : {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
+    const createAndSendUserOP = async (transaction) => {
+        const OP = await smartAccountAPI.createSignedUserOp(transaction);
+        const result = await bundlerClient.sendUserOpToBundler(OP);
         return result;
     };
 
-    const addToQueue = (OP) => {
-        setEnqueuedOPs([...enqueuedOPs, OP]);
-    }
-
-    const executeQueue = async () => {
-        const results = Array(enqueuedOPs).forEach(OP => {
-            return smartAccountSigner.sendTransaction(OP);
-        });
-
-        return results;
-    };
-
-    return { smartAccountAddress, createUserOperation, executeOP, addToQueue, executeQueue };
+    return { smartAccountAddress, createAndSendUserOP, configs, chainId };
 }
 
 export default useSmartAccount;
