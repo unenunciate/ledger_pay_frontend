@@ -3,7 +3,8 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 
 import Header from "../components/Header";
-import PaymentInformation from "../components/PaymentInformation";
+import Address from "../components/Address";
+import CardInfo from "../components/CardInfo";
 
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
@@ -25,7 +26,8 @@ const Settings = ({ d }) => {
     false,
     user?.worldcoinSetup ? false : true
   );
-  const [openPI, setOpenPI] = useState(false);
+  const [openCI, setOpenCI] = useState(false);
+  const [openBA, setOpenBA] = useState(false);
   const [tabPI, setTabPI] = useState(0);
 
   const { address } = useAccount();
@@ -48,27 +50,26 @@ const Settings = ({ d }) => {
                   <button
                     className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => {
-                      setTabPI(0);
-                      setOpenPI(true);
+                      setOpenCI(true);
                     }}
                   >
-                    <span>Credit Card</span>
+                    <span>Debit Card</span>
                   </button>
+                  <CardInfo open={openCI} setOpen={setOpenCI} tab={tabPI} />
                   <button
                     className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => {
-                      setTabPI(1);
-                      setOpenPI(true);
+                      setOpenBA(true);
                     }}
                   >
-                    <span>Bank Account</span>
+                    <span>Address</span>
                   </button>
+                  <Address openBA={openBA} setOpenBA={setOpenBA} tab={tabPI} />
                 </div>
                 <div className="flex flex-col space-y-2 justify-center items-center"></div>
               </>
             }
           </div>
-          <PaymentInformation open={openPI} setOpen={setOpenPI} tab={tabPI} />
 
           <div className="w-full justify-center items-center flex flex-col space-y-6 text-blue-400">
             {user?.worldcoinSetup || true ? (
