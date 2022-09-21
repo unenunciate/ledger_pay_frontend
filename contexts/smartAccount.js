@@ -22,17 +22,17 @@ const SmartAccountProvider = ({provider, children}) => {
     const smartAccountAddress = '0x8f8509E544aaf6Fd175a66F455E1d54Ea635C558' // useMemo(user?.smartAccountAddresses[chainId], [user, chainId]);
 
     const config = useCallback(() => {
-        const config = ClientConfigurations.find((c => c.chain.id === chainId))
+        const config = ClientConfigurations.find((c => c.Chain.id === chainId));
         return config;
     }, [chainId])
     
-    const smartAccountProvider = useMemo(async () => isConnectedAndNotRecovery ? provider && signer ? await newProvider(provider, config, signer) : null : null, [isConnectedAndNotRecovery, provider, signer, config]);
+    const smartAccountProvider = useMemo(async () => isConnectedAndNotRecovery ? provider && signer ? await newProvider(provider, config(), signer) : null : null, [isConnectedAndNotRecovery, provider, signer, config]);
     const smartAccountSigner = useMemo(async () => isConnectedAndNotRecovery ? smartAccountProvider ? await smartAccountProvider.getSigner() : null : null, [isConnectedAndNotRecovery, smartAccountProvider]);
-    const smartAccountAPI = useMemo(() => isConnectedAndNotRecovery ? smartAccountProvider && smartAccountSigner ? new SimpleWalletAPI(smartAccountProvider, config.entryPointAddress, smartAccountAddress, smartAccountSigner, address) : null : null, [isConnectedAndNotRecovery, smartAccountProvider, smartAccountSigner]);
-    const bundlerClient = useMemo(() => isConnectedAndNotRecovery ? smartAccountProvider && smartAccountSigner ? new HttpRpcClient(config.bundlerUrl, config.entryPointAddress, config.chain.id) : null : null, [isConnectedAndNotRecovery, config]);
+    const smartAccountAPI = useMemo(() => isConnectedAndNotRecovery ? smartAccountProvider && smartAccountSigner ? new SimpleWalletAPI(smartAccountProvider, config().entryPointAddress, smartAccountAddress, smartAccountSigner, address) : null : null, [isConnectedAndNotRecovery, smartAccountProvider, smartAccountSigner]);
+    const bundlerClient = useMemo(() => isConnectedAndNotRecovery ? smartAccountProvider && smartAccountSigner ? new HttpRpcClient(config().bundlerUrl, config().entryPointAddress, config().Chain.id) : null : null, [isConnectedAndNotRecovery, config]);
     
     return (
-        <SmartAccountContext.Provider value={{ smartAccountAddress, smartAccountAPI, bundlerClient, configs : ClientConfigurations, chainId }} >
+        <SmartAccountContext.Provider value={{ smartAccountAddress, smartAccountAPI, bundlerClient, configs : ClientConfigurations, config, chainId }} >
             {children}
         </SmartAccountContext.Provider>
     )
