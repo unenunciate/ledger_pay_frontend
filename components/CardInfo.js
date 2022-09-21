@@ -112,7 +112,7 @@ const CardInfo = ({ open, setOpen, tab }) => {
                       <div className="flex flex-row space-y-2 w-full">
                         <div className="flex flex-row space-x-2 basis-1/4">
                           <label className="h-full py-2 text-left text-blue-400 w-40">
-                            Expriation Date
+                            Expiration Date
                           </label>
                         </div>
                         <div className="flex flex-row space-x-2 basis-3/4">
