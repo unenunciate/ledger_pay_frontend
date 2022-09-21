@@ -13,7 +13,7 @@ const SmartAccountContext = createContext(null);
 const SmartAccountProvider = ({provider, children}) => {
     const { user, recoveryMode, isConnected } = useAuth();
 
-    const isConnectedAndNotRecovery = useMemo(isConnected && !recoveryMode, [isConnected, recoveryMode]);
+    const isConnectedAndNotRecovery = useMemo(() => (isConnected() && !recoveryMode), [isConnected, recoveryMode]);
 
     const { address } = useAccount();
     const { signer } = useSigner();

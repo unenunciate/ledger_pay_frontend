@@ -17,8 +17,7 @@ const WorldIDWidget = dynamic(
 );
 
 const Settings = ({ d }) => {
-  const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } =
-    useAuth();
+  const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } = useAuth();
   const { updateAction, onVerificationSuccess } = useWorldId(
     false,
     false,

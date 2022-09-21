@@ -8,15 +8,16 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
+import { ClientConfigurations } from '../utils/ClientConfigurations';
+
 import { createClient, configureChains, defaultChains } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
 import { Web3ModalEthereum } from '@web3modal/ethereum';
 import { Web3ModalProvider } from '@web3modal/react';
 
-import { AuthProvider } from "../contexts/auth";
 import { NotificationProvider } from "../contexts/notification";
-
+import { AuthProvider } from "../contexts/auth";
 import { SmartAccountProvider } from '../contexts/smartAccount';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -24,7 +25,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const App = ({ Component, pageProps }) => {
   const queryClient = new QueryClient();
 
-  const { chains, provider } = configureChains(defaultChains, [publicProvider()])
+  const { chains, provider } = configureChains(defaultChains, [publicProvider()]);
 
   const wagmiClient  = createClient({
     autoConnect: true,

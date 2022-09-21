@@ -39,7 +39,6 @@ export default function Home() {
     useEffect(() => {
         if(isLoading === false) {
             if(walletPriceHistory?.data?.items?.length > 0) {
-                console.debug(`Price history ${JSON.stringify(walletPriceHistory)}`);
                 setCoins(walletPriceHistory.data.items)
 
                 let total = 0;
@@ -205,7 +204,7 @@ export default function Home() {
                 <SendReceive open={openSR} setOpen={setOpenSR} tab={tabSR} />
                 <BuySellSwap open={openBSS} setOpen={setOpenBSS} tab={tabBSS} />
 
-                <div className='flex flex-col w-full lg:w-2/3 space-y-2 mt-12'>
+                <div className='flex flex-col w-full mt-12 space-y-2 lg:w-2/3'>
                     {
                         coins.map((coin, key) => {
                             return <CoinPanel coin={coin} key={key} />

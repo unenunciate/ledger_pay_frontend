@@ -1,4 +1,4 @@
-import { useEffect, useContext, } from 'react';
+import { useEffect, useContext, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../contexts/auth';
 import { isEmpty } from 'lodash';
@@ -21,7 +21,7 @@ const useAuth = (required = false) => {
 
     useEffect(() => {
         if(required) {
-            if(isConnected === false) {
+            if(isConnected() === false) {
                 router.push("/connect");
             }
         }
