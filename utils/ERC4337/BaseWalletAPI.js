@@ -106,7 +106,7 @@ export class BaseWalletAPI {
             callData,
             callGasLimit
         };
-    }
+    } 
     /**
      * return requestId for signing.
      * This value matches entryPoint.getRequestId (calculated off-chain, to avoid a view call)

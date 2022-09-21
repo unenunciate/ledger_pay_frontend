@@ -5,8 +5,6 @@ const NotificationContext = createContext(null);
 
 
 const NotificationProvider = ({children}) => {
- 
-
     return (
         <NotificationContext.Provider value={{}} >
             {children}

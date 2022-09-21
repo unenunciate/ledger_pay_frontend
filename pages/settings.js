@@ -18,8 +18,7 @@ const WorldIDWidget = dynamic(
 );
 
 const Settings = ({ d }) => {
-  const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } =
-    useAuth();
+  const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } = useAuth();
   const { updateAction, onVerificationSuccess } = useWorldId(
     false,
     false,
@@ -33,7 +32,7 @@ const Settings = ({ d }) => {
   const { address } = useAccount();
 
   return (
-    <div className="h-full w-full">
+    <div className="w-full h-full">
       <Head>
         <title>LedgerPay - Settings</title>
       </Head>
@@ -41,14 +40,14 @@ const Settings = ({ d }) => {
       <Header />
 
       <div className="min-h-[90vh] w-full justify-center items-center bg-gray-800 flex">
-        <section className="max-h w-full md:w-3/4 xl:w-1/2 justify-center items-center flex flex-col">
-          <div className="w-full justify-center items-center flex flex-col space-y-6 text-blue-400">
+        <section className="flex flex-col items-center justify-center w-full max-h md:w-3/4 xl:w-1/2">
+          <div className="flex flex-col items-center justify-center w-full space-y-6 text-blue-400">
             {
               <>
-                <div className="flex flex-col space-y-2 justify-center items-center">
+                <div className="flex flex-col items-center justify-center space-y-2">
                   <span>Payment Information</span>
                   <button
-                    className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                    className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => {
                       setOpenCI(true);
                     }}
@@ -57,7 +56,7 @@ const Settings = ({ d }) => {
                   </button>
                   <CardInfo open={openCI} setOpen={setOpenCI} tab={tabPI} />
                   <button
-                    className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                    className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => {
                       setOpenBA(true);
                     }}
@@ -66,19 +65,19 @@ const Settings = ({ d }) => {
                   </button>
                   <Address openBA={openBA} setOpenBA={setOpenBA} tab={tabPI} />
                 </div>
-                <div className="flex flex-col space-y-2 justify-center items-center"></div>
+                <div className="flex flex-col items-center justify-center space-y-2"></div>
               </>
             }
           </div>
 
-          <div className="w-full justify-center items-center flex flex-col space-y-6 text-blue-400">
+          <div className="flex flex-col items-center justify-center w-full space-y-6 text-blue-400">
             {user?.worldcoinSetup || true ? (
               user?.worldcoinEnabled || true ? (
                 <>
-                  <div className="flex flex-col space-y-2 justify-center items-center">
+                  <div className="flex flex-col items-center justify-center space-y-2">
                     <span>Worldcoin Recovery</span>
                     <button
-                      className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                      className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                       onClick={() => {
                         setRecoveryMode(true);
                         triggerEthereumLogin();
@@ -87,26 +86,26 @@ const Settings = ({ d }) => {
                       <span>Connect</span>
                     </button>
                     <button
-                      className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                      className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                       disabled={!recoveryMode}
                       onClick={() => updateAction(false, false, true)}
                     >
                       <span>Recover</span>
                     </button>
                     <button
-                      className="bg-purple-600 rounded-lg flex justify-center items-center w-24 h-12 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                      className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                       onClick={() => updateAction(false, true)}
                     >
                       <span>Disable</span>
                     </button>
                   </div>
-                  <div className="flex flex-col space-y-2 justify-center items-center"></div>
+                  <div className="flex flex-col items-center justify-center space-y-2"></div>
                 </>
               ) : (
                 <>
                   <span>Worldcoin Recovery</span>
                   <button
-                    className="bg-purple-600 rounded-xl flex justify-center items-center w-12 h-6"
+                    className="flex items-center justify-center w-12 h-6 bg-purple-600 rounded-xl"
                     onClick={() => updateAction(true)}
                   >
                     <span>Enable</span>
@@ -133,6 +132,7 @@ const Settings = ({ d }) => {
     </div>
   );
 };
+
 
 export default Settings;
 

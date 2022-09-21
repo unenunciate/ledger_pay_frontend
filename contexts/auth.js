@@ -2,7 +2,7 @@ import { initStytch, StytchProvider } from '@stytch/stytch-react';
 
 import { isEmpty } from 'lodash';
 
-import { createContext, useState, useMemo, useEffect } from 'react';
+import { createContext, useState, useMemo, useEffect, useRef } from 'react';
 import useUpdateEffect from '../hooks/useUpdateEffect';
 import { useCookies }  from 'react-cookie';
 
@@ -20,6 +20,7 @@ const stytchOptions = {
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({});
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const cookiesCheckedRef = useRef(false);
 
     const stytch = useMemo(() => (initStytch(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN, stytchOptions)), [stytchOptions]);
     const [stytchUUID, setStytchUUID] = useState(() => !isEmpty(cookies.user) ? cookies.user.stytches[0]: null);
@@ -49,6 +50,8 @@ const AuthProvider = ({ children }) => {
         if(cookies.user?.id !== user?.id || !isEmpty(cookies.user) && isEmpty(user)) {
             setUser(cookies.user);
         }
+
+        cookiesCheckedRef.current = true;
     }, [cookies]);
 
     useUpdateEffect(() => {
@@ -94,7 +97,7 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, stytch, EOA, triggerEthereumLogin, disconnect, updateUser, modalIsOpen: isOpen, closeModal: close, setRecoveryMode, recoveryMode}} >
+        <AuthContext.Provider value={{user, cookiesCheckedRef, stytch, EOA, triggerEthereumLogin, disconnect, updateUser, modalIsOpen: isOpen, closeModal: close, setRecoveryMode, recoveryMode}} >
             <StytchProvider stytch={stytch}>
                 {children}
             </StytchProvider>
