@@ -7,8 +7,8 @@ import Header from '../components/Header';
 import CoinPanel from '../components/CoinPanel';
 
 import useAuth from '../hooks/useAuth';
-import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState, useMemo } from 'react';
+import { useQuery, QueryClient, dehydrate } from '@tanstack/react-query';
 
 import { queryKeys } from '../utils/queries';
 import { getWalletPriceHistory } from '../utils/queries/covalent';
@@ -17,7 +17,7 @@ import currency  from 'currency.js';
 
 const testAddress = '0xe0a95BdE2672bBD12263C31BF818384Ca4DFEa87';
 
-export default function Home() {
+export default function Home({}) {
     useAuth();
 
   //const {data: walletPriceHistory, isLoading } = useQuery(queryKeys.covalent.walletPriceHistory(user.smartAccountAddress, 8001), getWalletPriceHistory);
@@ -27,29 +27,25 @@ export default function Home() {
 
     const USD = value => currency(value, { symbol: "$", precision: 2 });
     
-    const [totalValue, setTotalValue] = useState(0);
-    const [coins, setCoins] = useState([]);
+    const calcTotalValue = (d) => {
+        let total = 0;
+
+        for(let i = 0; i < d?.data?.items?.length ?? 0; i++) {
+            total += d.data.items[i].holdings[0].close.quote;
+        }
+        
+        return total;
+    }
+    
+    const totalValue = useMemo(() => calcTotalValue(walletPriceHistory), [walletPriceHistory]);
+
+    const coins = useMemo(() => (walletPriceHistory?.data?.items ?? []), [walletPriceHistory] );
 
     const [openBSS, setOpenBSS] = useState(false);
     const [tabBSS, setTabBSS] = useState(0);
 
     const [openSR, setOpenSR] = useState(false);
     const [tabSR, setTabSR] = useState(0);
-
-    useEffect(() => {
-        if(isLoading === false) {
-            if(walletPriceHistory?.data?.items?.length > 0) {
-                setCoins(walletPriceHistory.data.items)
-
-                let total = 0;
-                for(let i = 0; i < walletPriceHistory.data.items.length; i++) {
-                    total += walletPriceHistory.data.items[i].holdings[0].close.quote;
-                }
-
-                setTotalValue(total);
-            }
-        }
-    }, [isLoading, walletPriceHistory])
 
     return (
         <div className='w-full h-full'>
@@ -63,12 +59,12 @@ export default function Home() {
                 <div className="flex flex-col items-center w-full px-5 mx-auto space-y-12 text-center lg:w-2/3">
                     <div className='flex flex-row w-full py-4 bg-gray-800 border-2 border-purple-600 h-[140px] rounded-xl shadow-sm text-blue-400 shadow-purple-600'>
                         <div className='flex flex-col items-center justify-center w-1/2 border-r-2 border-purple-600 max-h'>
-                                <span>{isLoading ? USD(0).format(true) : USD(totalValue).format(true)}</span>
+                                <span>{USD(totalValue).format(true)}</span>
                                 <span>Total Assets</span>
                         </div>
 
                         <div className='flex flex-col items-center justify-center w-1/2 max-h'>
-                                <span>{isLoading ? 0 : walletPriceHistory?.data?.items?.length ?? 0}</span>
+                                <span>{walletPriceHistory?.data?.items?.length ?? 0}</span>
                                 <span>Amount Assets</span>
                         </div>
                     </div>
@@ -214,4 +210,19 @@ export default function Home() {
             </section>
         </div>
     )
+}
+
+
+export async function getServerSideProps(context) {
+    const queryClient = new QueryClient();
+
+    console.log(context.resolvedUrl);
+
+    await queryClient.prefetchQuery(queryKeys.covalent.walletPriceHistory(context.resolvedUrl?.searchParameters?.chainId ?? 137, testAddress), getWalletPriceHistory);
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        },
+    }
 }

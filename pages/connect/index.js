@@ -2,22 +2,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { useEffect } from 'react';
-import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 import useAuth from '../../hooks/useAuth';
 
 const Connect = () => {
-  const {triggerWalletLogin, user} = useAuth();
+  const { triggerEthereumLogin, user, isConnected } = useAuth();
 
   const router = useRouter();
 
   useEffect(() => {
-    if(!isEmpty(user)) {
+    if(isConnected()) {
       if(user?.id) {
         router.push('/');
       }
     }
-  }, [user])
+  }, [isConnected])
   
   return (
     <div className='flex flex-col items-center justify-center w-full h-screen bg-gradient-to-b from-purple-600 to-blue-400'>
@@ -26,7 +25,7 @@ const Connect = () => {
         <div div className='w-3/4 h-full py-12 space-y-12'>
             
             <div className='flex flex-col items-center justify-center w-full'>
-              <button onClick={triggerWalletLogin} className={`relative w-2/3 shadow-sm font-bold shadow-purple-600 hover:shadow-purple-300 text-blue-400 py-2 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75`} >
+              <button onClick={() => triggerEthereumLogin()} className={`relative w-2/3 shadow-sm font-bold shadow-purple-600 hover:shadow-purple-300 text-blue-400 py-2 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75`} >
                 <span className='w-full text-center'>Wallet</span>
               </button>
             </div>
@@ -34,7 +33,7 @@ const Connect = () => {
             <div className="w-full h-0 border-t-2 border-purple-600" />
 
             <div className='flex justify-center w-full h-max'>
-              <Link href="/connect/signup"><a className='relative w-2/3 py-2 font-bold text-center text-blue-400 bg-purple-600 shadow-sm hover:shadow-purple-300 shadow-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75'>Signup</a></Link>
+              <Link href="/connect/signup"><a className='relative w-2/3 py-2 font-bold text-center text-blue-400 bg-purple-600 rounded-lg shadow-sm hover:shadow-purple-300 shadow-purple-600 text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75'>Signup</a></Link>
             </div>
         </div>
       </section>

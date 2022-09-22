@@ -69,8 +69,8 @@ const Settings = ({ d }) => {
           </div>
 
           <div className="flex flex-col items-center justify-center w-full space-y-6 text-blue-400">
-            {user?.worldcoinSetup || true ? (
-              user?.worldcoinEnabled || true ? (
+            {false || user?.worldcoinSetup ? (
+              false || user?.worldcoinEnabled ? (
                 <>
                   <div className="flex flex-col items-center justify-center space-y-2">
                     <span>Worldcoin Recovery</span>
@@ -103,7 +103,7 @@ const Settings = ({ d }) => {
                 <>
                   <span>Worldcoin Recovery</span>
                   <button
-                    className="flex items-center justify-center w-12 h-6 bg-purple-600 rounded-xl"
+                    className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => updateAction(true)}
                   >
                     <span>Enable</span>

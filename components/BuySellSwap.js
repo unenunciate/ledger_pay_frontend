@@ -5,6 +5,11 @@ import Image from "next/image";
 
 import { useEffect, useRef, useState, Fragment } from "react";
 
+import useAuth from "../hooks/useAuth";
+import useSwap from "../hooks/useSwap";
+
+
+
 const cryptos = [
     {id: 0, name: 'Polygon', icon: {url: '/polygon.png'}},
     {id: 1, name: 'USDC', icon: {url: '/USDC.png'}}
@@ -32,6 +37,8 @@ const BuySellSwap = ({ open, setOpen, tab }) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(paymentMethods[0]);
 
     const [dollarAmount, setDollarAmount] = useState(0);
+
+    useSwap();
 
     const backgroundRef = useRef(null);
 
