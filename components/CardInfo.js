@@ -3,9 +3,11 @@ import { Transition, Tab } from "@headlessui/react";
 import AddressPanel from "./AddressPanel";
 
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 
+import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../utils/queries";
+import useCards from "../hooks/useCards";
+import { addCard } from "../utils/queries/cards";
 
 const CardInfo = ({ open, setOpen, tab }) => {
   const [number, setNumber] = useState("");
@@ -14,6 +16,11 @@ const CardInfo = ({ open, setOpen, tab }) => {
   const [month, setMonth] = useState("");
 
   const backgroundRef = useRef(null);
+
+  // function Cards
+  const { cards, isLoading, error } = useCards();
+
+  // console.log(`Error? ${error} and Cards? ${cards}`);
 
   useEffect(() => {
     document.addEventListener("mousedown", (event) => {
@@ -85,6 +92,14 @@ const CardInfo = ({ open, setOpen, tab }) => {
                 <div className="flex flex-col items-center justify-center w-full min-h-screen p-4">
                   <div className="flex flex-col items-center justify-center w-full p-4 h-[75vh] pt-8">
                     <div className="flex flex-col space-y-2">
+                      <div>
+                        TEST GET Cards
+                        {!!cards &&
+                          !!cards.length &&
+                          cards.map((cards) => (
+                            <p key={cards.number}>Test: {cards.number} </p>
+                          ))}
+                      </div>
                       <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
                           <label className="w-40 h-full py-2 text-left text-blue-400">
@@ -146,7 +161,7 @@ const CardInfo = ({ open, setOpen, tab }) => {
                     <div className="flex flex-col items-center justify-center w-full">
                       <button
                         onClick={() =>
-                          saveAction({
+                          addCard({
                             number: number,
                             cvv: cvv,
                             month: month,
