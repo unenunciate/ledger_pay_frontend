@@ -3,7 +3,6 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 
 import Header from "../components/Header";
-import Address from "../components/Address";
 import CardInfo from "../components/CardInfo";
 
 import useAuth from "../hooks/useAuth";
@@ -26,8 +25,7 @@ const Settings = ({ d }) => {
     user?.worldcoinSetup ? false : true
   );
   const [openCI, setOpenCI] = useState(false);
-  const [openBA, setOpenBA] = useState(false);
-  const [tabPI, setTabPI] = useState(0);
+  const [openBI, setOpenBI] = useState(false);
 
   const { address } = useAccount();
 
@@ -47,23 +45,23 @@ const Settings = ({ d }) => {
                 <div className="flex flex-col items-center justify-center space-y-2">
                   <span>Payment Information</span>
                   <button
-                    className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                    className="flex items-center justify-center w-48 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => {
                       setOpenCI(true);
                     }}
                   >
                     <span>Debit Card</span>
                   </button>
-                  <CardInfo open={openCI} setOpen={setOpenCI} tab={tabPI} />
+                  <CardInfo open={openCI} setOpen={setOpenCI} tab={0} />
                   <button
-                    className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
+                    className="flex items-center justify-center w-48 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => {
-                      setOpenBA(true);
+                      setOpenBI(true);
                     }}
                   >
-                    <span>Address</span>
+                    <span>Bank Account</span>
                   </button>
-                  <Address openBA={openBA} setOpenBA={setOpenBA} tab={tabPI} />
+                  
                 </div>
                 <div className="flex flex-col items-center justify-center space-y-2"></div>
               </>

@@ -1,5 +1,7 @@
 import { Transition, Tab } from "@headlessui/react";
 
+import AddressPanel from "./AddressPanel";
+
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -71,15 +73,21 @@ const CardInfo = ({ open, setOpen, tab }) => {
               >
                 <span>Debit Card</span>
               </Tab>
+              <Tab
+                as="button"
+                className="flex items-center justify-center w-1/2 py-2 rounded-lg cursor-pointer ui-selected:font-bold ui-selected:bg-gray-900"
+              >
+                <span>Address</span>
+              </Tab>
             </Tab.List>
             <Tab.Panels>
               <Tab.Panel>
                 <div className="flex flex-col items-center justify-center w-full min-h-screen p-4">
                   <div className="flex flex-col items-center justify-center w-full p-4 h-[75vh] pt-8">
                     <div className="flex flex-col space-y-2">
-                      <div className="flex flex-row space-y-2 w-full">
+                      <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
-                          <label className="h-full py-2 text-left text-blue-400 w-40">
+                          <label className="w-40 h-full py-2 text-left text-blue-400">
                             Card Number
                           </label>
                         </div>
@@ -93,9 +101,9 @@ const CardInfo = ({ open, setOpen, tab }) => {
                           />
                         </div>
                       </div>
-                      <div className="flex flex-row space-y-2 w-full">
+                      <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
-                          <label className="h-full py-2 text-left text-blue-400 w-40">
+                          <label className="w-40 h-full py-2 text-left text-blue-400">
                             CVV
                           </label>
                         </div>
@@ -109,22 +117,22 @@ const CardInfo = ({ open, setOpen, tab }) => {
                           />
                         </div>
                       </div>
-                      <div className="flex flex-row space-y-2 w-full">
+                      <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
-                          <label className="h-full py-2 text-left text-blue-400 w-40">
+                          <label className="w-40 h-full py-2 text-left text-blue-400">
                             Expiration Date
                           </label>
                         </div>
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
-                            className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-40 form-input focus:border-none focus:outline-none"
+                            className="w-40 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
                             placeholder="11"
                             type="text"
                             value={month}
                             onChange={(e) => setMonth(e.target.value)}
                           />
                           <input
-                            className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-40 form-input focus:border-none focus:outline-none"
+                            className="w-40 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
                             placeholder="27"
                             type="text"
                             value={year}
@@ -153,6 +161,7 @@ const CardInfo = ({ open, setOpen, tab }) => {
                   </div>
                 </div>
               </Tab.Panel>
+              <AddressPanel />
             </Tab.Panels>
           </Tab.Group>
         </div>
