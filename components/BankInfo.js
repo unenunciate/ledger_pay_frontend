@@ -4,23 +4,23 @@ import AddressPanel from "./AddressPanel";
 
 import { useEffect, useRef, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
-import { queryKeys } from "../utils/queries";
-import useCards from "../hooks/useCards";
-import { addCard } from "../utils/queries/cards";
+import useBankAccounts from "../hooks/useBankAccounts";
+import {
+  getBankAccounts,
+  addBankAccount,
+  addAddress,
+} from "../utils/queries/bankaccounts";
 
-const CardInfo = ({ open, setOpen, tab }) => {
-  const [number, setNumber] = useState("");
-  const [cvv, setCVV] = useState("");
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
+const BankInfo = ({ open, setOpen, tab }) => {
+  const [accountOwner, setAccountOwner] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [routingNumber, setRoutingNumber] = useState("");
 
   const backgroundRef = useRef(null);
 
-  // debit cards
-  const { cards, isLoading, error } = useCards();
-
-  // console.log(`Error? ${error} and Cards? ${cards}`);
+  // bank accounts
+  const { bankAccounts, isLoading, error } = useBankAccounts();
+  // console.log(`Error? ${error} and Cards? ${bankAccounts}`);
 
   useEffect(() => {
     document.addEventListener("mousedown", (event) => {
@@ -78,7 +78,7 @@ const CardInfo = ({ open, setOpen, tab }) => {
                 as="button"
                 className="flex items-center justify-center w-1/2 py-2 rounded-lg cursor-pointer ui-selected:font-bold ui-selected:bg-gray-900"
               >
-                <span>Debit Card</span>
+                <span>Bank Accounts</span>
               </Tab>
               <Tab
                 as="button"
@@ -93,7 +93,7 @@ const CardInfo = ({ open, setOpen, tab }) => {
                   <div className="flex flex-col items-center justify-center w-full p-4 h-[75vh] pt-8">
                     <div className="flex flex-col space-y-2">
                       {/* <div>
-                        TEST GET Cards
+                        TEST GET Bank Accounts
                         {!!cards &&
                           !!cards.length &&
                           cards.map((cards) => (
@@ -103,7 +103,23 @@ const CardInfo = ({ open, setOpen, tab }) => {
                       <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
                           <label className="w-40 h-full py-2 text-left text-blue-400">
-                            Card Number
+                            Account Owner
+                          </label>
+                        </div>
+                        <div className="flex flex-row space-x-2 basis-3/4">
+                          <input
+                            className="w-80 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
+                            placeholder="John Smith"
+                            type="text"
+                            value={accountOwner}
+                            onChange={(e) => setAccountOwner(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-row w-full space-y-2">
+                        <div className="flex flex-row space-x-2 basis-1/4">
+                          <label className="w-40 h-full py-2 text-left text-blue-400">
+                            Account Number
                           </label>
                         </div>
                         <div className="flex flex-row space-x-2 basis-3/4">
@@ -111,47 +127,24 @@ const CardInfo = ({ open, setOpen, tab }) => {
                             className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-80 form-input focus:border-none focus:outline-none"
                             placeholder="1234 5678 9999 1234"
                             type="text"
-                            value={number}
-                            onChange={(e) => setNumber(e.target.value)}
+                            value={accountNumber} // stores IBAN if applicable
+                            onChange={(e) => setAccountNumber(e.target.value)}
                           />
                         </div>
                       </div>
                       <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
                           <label className="w-40 h-full py-2 text-left text-blue-400">
-                            CVV
+                            Routing Number
                           </label>
                         </div>
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-80 form-input focus:border-none focus:outline-none"
-                            placeholder="123"
+                            placeholder="1234567890"
                             type="text"
-                            value={cvv}
-                            onChange={(e) => setCVV(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex flex-row w-full space-y-2">
-                        <div className="flex flex-row space-x-2 basis-1/4">
-                          <label className="w-40 h-full py-2 text-left text-blue-400">
-                            Expiration Date
-                          </label>
-                        </div>
-                        <div className="flex flex-row space-x-2 basis-3/4">
-                          <input
-                            className="w-40 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
-                            placeholder="11"
-                            type="text"
-                            value={month}
-                            onChange={(e) => setMonth(e.target.value)}
-                          />
-                          <input
-                            className="w-40 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
-                            placeholder="27"
-                            type="text"
-                            value={year}
-                            onChange={(e) => setYear(e.target.value)}
+                            value={routingNumber} // stores swiftBic if applicable
+                            onChange={(e) => setRoutingNumber(e.target.value)}
                           />
                         </div>
                       </div>
@@ -161,11 +154,10 @@ const CardInfo = ({ open, setOpen, tab }) => {
                     <div className="flex flex-col items-center justify-center w-full">
                       <button
                         onClick={() =>
-                          addCard({
-                            number: number,
-                            cvv: cvv,
-                            month: month,
-                            year: year,
+                          addBankAccount({
+                            accountOwner: accountOwner,
+                            accountNumber: accountNumber,
+                            routingNumber: routingNumber,
                           })
                         }
                         className="flex items-center justify-center w-1/2 py-6 text-3xl font-bold text-blue-400 bg-purple-600 rounded lg:1/3 hover:bg-purple-300 hover:text-blue-100 sm:text-xl"
@@ -201,4 +193,4 @@ const CardInfo = ({ open, setOpen, tab }) => {
   );
 };
 
-export default CardInfo;
+export default BankInfo;

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 
 import Header from "../components/Header";
 import CardInfo from "../components/CardInfo";
+import BankInfo from "../components/BankInfo";
 
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
@@ -17,7 +18,8 @@ const WorldIDWidget = dynamic(
 );
 
 const Settings = ({ d }) => {
-  const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } = useAuth();
+  const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } =
+    useAuth();
   const { updateAction, onVerificationSuccess } = useWorldId(
     false,
     false,
@@ -61,7 +63,7 @@ const Settings = ({ d }) => {
                   >
                     <span>Bank Account</span>
                   </button>
-                  
+                  <BankInfo open={openBI} setOpen={setOpenBI} tab={0} />
                 </div>
                 <div className="flex flex-col items-center justify-center space-y-2"></div>
               </>
@@ -130,7 +132,6 @@ const Settings = ({ d }) => {
     </div>
   );
 };
-
 
 export default Settings;
 
