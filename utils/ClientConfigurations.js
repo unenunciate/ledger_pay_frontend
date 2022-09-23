@@ -2,7 +2,7 @@ export const ClientConfigurations = [
     {
         paymasterAddress: "0x1184e555D2C56690cB27936357C5A0507Fb3a5d3",
         entryPointAddress: "0x953284cf7e8494563d79f4361895316690f68af5",
-        bundlerUrl: "https://polygon.bundler.ledgepay.io",
+        bundlerUrl: "https://bundler.ledgepay.io",
         logoUrl: "/polygon.png",
         Chain: {
             id: 137,
@@ -10,7 +10,7 @@ export const ClientConfigurations = [
             network: 'polygon',
             nativeCurrency: { name: 'Matic', symbol: 'MATIC', decimals: 18 },
             rpcUrls: {
-            public: "https://matic-mainnet.chainstacklabs.com/",
+                public: "https://matic-mainnet.chainstacklabs.com/",
             },
             blockExplorers: {
                 default:  "https://polygonscan.com/",
@@ -27,7 +27,7 @@ export const ClientConfigurations = [
     {
         paymasterAddress: "0x871dc4bFa243DB77c08D14d0c66a98d189e2f770",
         entryPointAddress: "0x9d74Dd4C532fdfBEc19Be8D1c31C2223001Aa816",
-        bundlerUrl: "https://cronos.bundler.ledgepay.io",
+        bundlerUrl: "https://bundler.ledgepay.io",
         logoUrl: "/cronos.svg",
         Chain: {
             id: 338,
@@ -52,7 +52,7 @@ export const ClientConfigurations = [
     {
         paymasterAddress: "0x9d74Dd4C532fdfBEc19Be8D1c31C2223001Aa816",
         entryPointAddress: "0x20ed209B16EF395db0F0031A1bbf0F17CA5Aaca4",
-        bundlerUrl: "https://optimism.bundler.ledgepay.io",
+        bundlerUrl: "https://bundler.ledgepay.io",
         logoUrl: "/optimism.png",
         Chain: {
             id: 10,
@@ -73,7 +73,40 @@ export const ClientConfigurations = [
                 blockCreated: 0,
             },
           }
+    },
+    {
+        paymasterAddress: "0x871dc4bFa243DB77c08D14d0c66a98d189e2f770",
+        entryPointAddress: "0x9d74Dd4C532fdfBEc19Be8D1c31C2223001Aa816",
+        bundlerUrl: "https://bundler.ledgepay.io",
+        Chain: {
+            id: 23295,
+            name: 'Sapphire ParaTime Testnet',
+            network: 'sapphire',
+            nativeCurrency: { name: 'TEST', symbol: 'TEST', decimals: 18 },
+            rpcUrls: {
+              public: "https://testnet.sapphire.oasis.dev/",
+            },
+            blockExplorers: {
+              default:  "https://testnet.explorer.sapphire.oasis.dev/",
+            },
+            ens: {
+              address: '0x590C465154bd49D23d402cdb69170F6ba1f678d8',
+            },
+            multicall: {
+              address: '0x0',
+              blockCreated: 0,
+            },
+          }
     }
 ]
 
 
+export function makeHeaderValueString(chainId = null) {
+    const config = ClientConfigurations.find(c => c.Chain.id === chainId);
+
+    if(!config) {
+        return 'polygon:137';
+    }
+
+    return `${config.Chain.network}:${config.Chain.id}`;
+}

@@ -10,6 +10,8 @@ import {
 
 import { ClientConfigurations } from '../utils/ClientConfigurations';
 
+import Sentry from "@sentry/nextjs"
+
 import { createClient, configureChains, defaultChains } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -21,6 +23,11 @@ import { AuthProvider } from "../contexts/auth";
 import { SmartAccountProvider } from '../contexts/smartAccount';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  tracesSampleRate: 1.0,
+});
 
 const App = ({ Component, pageProps }) => {
   const queryClient = new QueryClient();

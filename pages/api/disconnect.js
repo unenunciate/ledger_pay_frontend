@@ -1,4 +1,5 @@
 import Cookies from 'cookies';
+import { withSentry } from '@sentry/nextjs';
 
 async function handler(req, res) {
   const cookies = new Cookies(req, res);
