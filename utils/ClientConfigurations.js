@@ -101,7 +101,7 @@ export const ClientConfigurations = [
 ]
 
 
-export function makeHeaderValueString(chainId = null) {
+export const makeHeaderValueString = (chainId = null) => {
     const config = ClientConfigurations.find(c => c.Chain.id === chainId);
 
     if(!config) {
