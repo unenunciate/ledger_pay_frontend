@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../utils/queries";
-import { addAddress } from "../utils/queries/cards";
+import { addAddress } from "../utils/queries/address";
 
 const AddressPanel = () => {
   const [street1, setStreet1] = useState("");

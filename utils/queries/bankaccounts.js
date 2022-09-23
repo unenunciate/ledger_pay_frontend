@@ -1,7 +1,7 @@
 import { wyreHeaders } from "./headers";
 
-const getCards = async () => {
-  const GET_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/get-debit-card`;
+const getBankAccounts = async () => {
+  const GET_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/get-bank-account`;
   const settings = {
     method: "GET",
     headers: wyreHeaders,
@@ -20,12 +20,11 @@ const getCards = async () => {
   }
 };
 
-const addCard = async (data) => {
-  // Data: {"number":"1241422525","cvv":"444","month":"5","year":"32"}
+const addBankAccount = async (data) => {
+  // Data: {"accountOwner":"Timmy Smith","accountNumber":"14781645","routingNumber":"324-23745-334"}
   console.log(`Data: ${JSON.stringify(data)}`);
 
-  // const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-debit-card`;
-  const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-debit-card`;
+  const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-bank-account`;
 
   const settings = {
     method: "POST",
@@ -71,4 +70,4 @@ const addAddress = async (data) => {
   }
 };
 
-export { getCards, addCard, addAddress };
+export { getBankAccounts, addBankAccount, addAddress };
