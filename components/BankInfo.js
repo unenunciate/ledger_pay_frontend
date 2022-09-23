@@ -1,6 +1,7 @@
 import { Transition, Tab } from "@headlessui/react";
 
 import AddressPanel from "./AddressPanel";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -16,10 +17,24 @@ const BankInfo = ({ open, setOpen, tab }) => {
   const [accountNumber, setAccountNumber] = useState("");
   const [routingNumber, setRoutingNumber] = useState("");
 
+  const [ownerShown, setOwnerShown] = useState(true);
+  const [accountShown, setAccountShown] = useState(true);
+  const [routingShown, setRoutingShown] = useState(true);
+
   const backgroundRef = useRef(null);
 
+  const toggleOwner = () => {
+    setOwnerShown(!ownerShown);
+  };
+  const toggleAccount = () => {
+    setAccountShown(!accountShown);
+  };
+  const toggleRouting = () => {
+    setRoutingShown(!routingShown);
+  };
+
   // bank accounts
-  const { bankAccounts, isLoading, error } = useBankAccounts();
+  // const { bankAccounts, isLoading, error } = useBankAccounts();
   // console.log(`Error? ${error} and Cards? ${bankAccounts}`);
 
   useEffect(() => {
@@ -92,14 +107,6 @@ const BankInfo = ({ open, setOpen, tab }) => {
                 <div className="flex flex-col items-center justify-center w-full min-h-screen p-4">
                   <div className="flex flex-col items-center justify-center w-full p-4 h-[75vh] pt-8">
                     <div className="flex flex-col space-y-2">
-                      {/* <div>
-                        TEST GET Bank Accounts
-                        {!!cards &&
-                          !!cards.length &&
-                          cards.map((cards) => (
-                            <p key={cards.number}>Test: {cards.number} </p>
-                          ))}
-                      </div> */}
                       <div className="flex flex-row w-full space-y-2">
                         <div className="flex flex-row space-x-2 basis-1/4">
                           <label className="w-40 h-full py-2 text-left text-blue-400">
@@ -109,11 +116,18 @@ const BankInfo = ({ open, setOpen, tab }) => {
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="w-80 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
-                            placeholder="John Smith"
-                            type="text"
+                            placeholder="Firstname Lastname"
+                            type={ownerShown ? "text" : "password"}
                             value={accountOwner}
                             onChange={(e) => setAccountOwner(e.target.value)}
                           />
+                          <button onClick={toggleOwner}>
+                            {ownerShown ? (
+                              <EyeIcon className="w-8 h-8" />
+                            ) : (
+                              <EyeSlashIcon className="w-8 h-8" />
+                            )}
+                          </button>
                         </div>
                       </div>
                       <div className="flex flex-row w-full space-y-2">
@@ -125,11 +139,18 @@ const BankInfo = ({ open, setOpen, tab }) => {
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-80 form-input focus:border-none focus:outline-none"
-                            placeholder="1234 5678 9999 1234"
-                            type="text"
+                            placeholder="xxxxxyyyyzzzzyyyy"
+                            type={accountShown ? "text" : "password"}
                             value={accountNumber} // stores IBAN if applicable
                             onChange={(e) => setAccountNumber(e.target.value)}
                           />
+                          <button onClick={toggleAccount}>
+                            {accountShown ? (
+                              <EyeIcon className="w-8 h-8" />
+                            ) : (
+                              <EyeSlashIcon className="w-8 h-8" />
+                            )}
+                          </button>
                         </div>
                       </div>
                       <div className="flex flex-row w-full space-y-2">
@@ -141,11 +162,18 @@ const BankInfo = ({ open, setOpen, tab }) => {
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-80 form-input focus:border-none focus:outline-none"
-                            placeholder="1234567890"
-                            type="text"
+                            placeholder="123456789"
+                            type={routingShown ? "text" : "password"}
                             value={routingNumber} // stores swiftBic if applicable
                             onChange={(e) => setRoutingNumber(e.target.value)}
                           />
+                          <button onClick={toggleRouting}>
+                            {routingShown ? (
+                              <EyeIcon className="w-8 h-8" />
+                            ) : (
+                              <EyeSlashIcon className="w-8 h-8" />
+                            )}
+                          </button>
                         </div>
                       </div>
                     </div>
