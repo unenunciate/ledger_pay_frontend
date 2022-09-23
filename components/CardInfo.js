@@ -1,6 +1,7 @@
 import { Transition, Tab } from "@headlessui/react";
 
 import AddressPanel from "./AddressPanel";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -15,12 +16,27 @@ const CardInfo = ({ open, setOpen, tab }) => {
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
 
+  const [numberShown, setNumberShown] = useState(true);
+  const [cvvShown, setCvvShown] = useState(true);
+  const [dateShown, setDateShown] = useState(true);
+
   const backgroundRef = useRef(null);
 
+  const toggleNumber = () => {
+    setNumberShown(!numberShown);
+  };
+  const toggleCvv = () => {
+    setCvvShown(!cvvShown);
+  };
+  const toggleDate = () => {
+    setDateShown(!dateShown);
+  };
+
   // debit cards
-  const { cards, isLoading, error } = useCards();
+  // const { cards, isLoading, error } = useCards();
 
   // console.log(`Error? ${error} and Cards? ${cards}`);
+  // console.log(process.env.NEXT_PUBLIC_STYTCH_SECRET_KEY);
 
   useEffect(() => {
     document.addEventListener("mousedown", (event) => {
@@ -109,11 +125,18 @@ const CardInfo = ({ open, setOpen, tab }) => {
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-80 form-input focus:border-none focus:outline-none"
-                            placeholder="1234 5678 9999 1234"
-                            type="text"
+                            placeholder="XXXX YYYY ZZZZ ZZZZ"
+                            type={numberShown ? "text" : "password"}
                             value={number}
                             onChange={(e) => setNumber(e.target.value)}
                           />
+                          <button onClick={toggleNumber}>
+                            {numberShown ? (
+                              <EyeIcon className="w-8 h-8" />
+                            ) : (
+                              <EyeSlashIcon className="w-8 h-8" />
+                            )}
+                          </button>
                         </div>
                       </div>
                       <div className="flex flex-row w-full space-y-2">
@@ -125,11 +148,18 @@ const CardInfo = ({ open, setOpen, tab }) => {
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-80 form-input focus:border-none focus:outline-none"
-                            placeholder="123"
-                            type="text"
+                            placeholder="CVV"
+                            type={cvvShown ? "text" : "password"}
                             value={cvv}
                             onChange={(e) => setCVV(e.target.value)}
                           />
+                          <button onClick={toggleCvv}>
+                            {cvvShown ? (
+                              <EyeIcon className="w-8 h-8" />
+                            ) : (
+                              <EyeSlashIcon className="w-8 h-8" />
+                            )}
+                          </button>
                         </div>
                       </div>
                       <div className="flex flex-row w-full space-y-2">
@@ -141,18 +171,25 @@ const CardInfo = ({ open, setOpen, tab }) => {
                         <div className="flex flex-row space-x-2 basis-3/4">
                           <input
                             className="w-40 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
-                            placeholder="11"
-                            type="text"
+                            placeholder="MM"
+                            type={dateShown ? "text" : "password"}
                             value={month}
                             onChange={(e) => setMonth(e.target.value)}
                           />
                           <input
                             className="w-40 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg form-input focus:border-none focus:outline-none"
-                            placeholder="27"
-                            type="text"
+                            placeholder="YY"
+                            type={dateShown ? "text" : "password"}
                             value={year}
                             onChange={(e) => setYear(e.target.value)}
                           />
+                          <button onClick={toggleDate}>
+                            {dateShown ? (
+                              <EyeIcon className="w-8 h-8" />
+                            ) : (
+                              <EyeSlashIcon className="w-8 h-8" />
+                            )}
+                          </button>
                         </div>
                       </div>
                     </div>
