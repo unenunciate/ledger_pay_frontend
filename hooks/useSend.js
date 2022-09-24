@@ -14,21 +14,28 @@ const useSend = (token = null, callback = null) => {
 
     
     const initSend = async () => {
+
         if(recipent !== null) {
             if(token === null) {
-                //Gas
+                txObject = {value : amount, target : recipent, data : "", maxFeePerGas: null, maxPriorityFeePerGas: null}
+                createAndSendUserOP(txObject);
 
-                //all data
-                //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
-                //once tx prepared  V first param function below
-                createAndSendUserOP();
             } else {
+                
                 //ERC20
+                let iface = new ethers.utils.Interface([
+                    "function transfer(address,uint256)"
+                ]);
+                let callData = iface.encodeFunctionData(
+                    "transfer", [
+                    recipent,
+                    amount
+                ]);
+              
+                let txObject = {value : 0, target : tokenAddress, maxFeePerGas: null, maxPriorityFeePerGas: null, data: callData}
 
-                //all data
-                //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
-                //once tx prepared  V first param function below
-                createAndSendUserOP();
+
+                createAndSendUserOP(txObject);
             }
         }
         
