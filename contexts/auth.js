@@ -97,7 +97,7 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, cookiesCheckedRef, stytch, EOA, triggerEthereumLogin, disconnect, updateUser, modalIsOpen: isOpen, closeModal: close, setRecoveryMode, recoveryMode}} >
+        <AuthContext.Provider value={{user, cookiesCheckedRef, stytch, EOA, triggerEthereumLogin, disconnect, updateUser, modalIsOpen: isOpen, closeModal: close, setRecoveryMode, recoveryMode, setStytchUUID}} >
             <StytchProvider stytch={stytch}>
                 {children}
             </StytchProvider>

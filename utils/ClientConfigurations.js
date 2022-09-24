@@ -6,11 +6,11 @@ export const ClientConfigurations = [
         logoUrl: "/polygon.png",
         Chain: {
             id: 137,
-            name: 'Polygon',
+            name: 'polygon',
             network: 'polygon',
             nativeCurrency: { name: 'Matic', symbol: 'MATIC', decimals: 18 },
             rpcUrls: {
-                public: "https://matic-mainnet.chainstacklabs.com/",
+                default: "https://matic-mainnet.chainstacklabs.com/",
             },
             blockExplorers: {
                 default:  "https://polygonscan.com/",
@@ -22,6 +22,7 @@ export const ClientConfigurations = [
                 address: '0x0',
                 blockCreated: 0,
             },
+            testnet: false
         }
     },
     {
@@ -35,7 +36,7 @@ export const ClientConfigurations = [
             network: 'cronos',
             nativeCurrency: { name: 'TCRO', symbol: 'TCRO', decimals: 18 },
             rpcUrls: {
-                public: "https://evm-t3.cronos.org/",
+                default: "https://evm-t3.cronos.org/",
             },
             blockExplorers: {
                 default:  "https://testnet.cronoscan.com/",
@@ -47,6 +48,7 @@ export const ClientConfigurations = [
                 address: '0x0',
                 blockCreated: 0,
             },
+            testnet: true
         }
     },
     {
@@ -60,7 +62,7 @@ export const ClientConfigurations = [
             network: 'optimism',
             nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
             rpcUrls: {
-                public: "https://mainnet.optimism.io/",
+                default: "https://mainnet.optimism.io/",
             },
             blockExplorers: {
                 default:  "https://optimistic.etherscan.io/",
@@ -72,7 +74,8 @@ export const ClientConfigurations = [
                 address: '0x0',
                 blockCreated: 0,
             },
-          }
+            testnet: true
+        }
     },
     {
         paymasterAddress: "0x871dc4bFa243DB77c08D14d0c66a98d189e2f770",
@@ -84,7 +87,7 @@ export const ClientConfigurations = [
             network: 'sapphire',
             nativeCurrency: { name: 'TEST', symbol: 'TEST', decimals: 18 },
             rpcUrls: {
-              public: "https://testnet.sapphire.oasis.dev/",
+                default: "https://testnet.sapphire.oasis.dev/",
             },
             blockExplorers: {
               default:  "https://testnet.explorer.sapphire.oasis.dev/",
@@ -96,7 +99,8 @@ export const ClientConfigurations = [
               address: '0x0',
               blockCreated: 0,
             },
-          }
+            testnet: true
+        }
     }
 ]
 

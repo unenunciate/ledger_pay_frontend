@@ -68,7 +68,7 @@ const Signup = () => {
       <section className='flex flex-col items-center justify-center w-5/6 py-6 pb-6 bg-gray-800 shadow-xl rounded-xl md:w-3/4 lg:w-1/2 2xl:w-1/3 shadow-gray-800'>
         <Link href={"https://www.ledgepay.io"}><a className="flex items-center h-full px-6 rounded-lg hover:bg-gray-900"><Image width={32} height={32} src="/LedgePay.png" layout="fixed" /></a></Link>
        
-        <div div className='w-3/4 h-full space-y-6'>
+        <div className='w-3/4 h-full space-y-6'>
           <form onSubmit={onSignupSubmit} className={`w-full flex flex-col space-y-12 justify-center items-center ${false ? 'invisiable' : ''}`}>
               <input
                 className={`h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-full form-input focus:border-none focus:outline-none`}

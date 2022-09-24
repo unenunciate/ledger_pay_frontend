@@ -115,13 +115,13 @@ const Profile = ({ d }) => {
                               </div>
                             :
                               list.map((item, index) => {
-                                return <FeedItem {...item} key={index}/>
+                                return <></>//<FeedItem {...item} key={index}/>
                               })
                         }
 
                         {
                           hasMore ? 
-                              <button className='w-full h-8 text-center text-green-600 border-t-1 border-green-600' onClick={loadMore} disabled={loading}>More</button>
+                              <button className='w-full h-8 text-center text-green-600 border-green-600 border-t-1' onClick={loadMore} disabled={loading}>More</button>
                             :
                               <></>
                         }

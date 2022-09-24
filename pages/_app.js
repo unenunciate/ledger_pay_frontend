@@ -10,10 +10,8 @@ import {
 
 import { ClientConfigurations } from '../utils/ClientConfigurations';
 
-import Sentry from "@sentry/nextjs"
-
 import { createClient, configureChains, defaultChains } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 import { Web3ModalEthereum } from '@web3modal/ethereum';
 import { Web3ModalProvider } from '@web3modal/react';
@@ -24,15 +22,21 @@ import { SmartAccountProvider } from '../contexts/smartAccount';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  tracesSampleRate: 1.0,
-});
+
 
 const App = ({ Component, pageProps }) => {
   const queryClient = new QueryClient();
 
-  const { chains, provider } = configureChains(defaultChains, [publicProvider()]);
+  const deployedChains = ClientConfigurations.map(config => config.Chain)
+
+  const { chains, provider } = configureChains(deployedChains, [
+          jsonRpcProvider({
+            rpc: (chain) => ({ http: chain.rpcUrls.default })
+          })
+        ]
+    );
+
+  
 
   const wagmiClient  = createClient({
     autoConnect: true,

@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 
 const useAuth = (required = false) => {
     const router = useRouter();
-    const {user, stytch, EOA, cookiesCheckedRef, triggerEthereumLogin, disconnect, updateUser, modalIsOpen, closeModal, setRecoveryMode, recoveryMode} = useContext(AuthContext);
+    const {user, stytch, EOA, cookiesCheckedRef, triggerEthereumLogin, disconnect, updateUser, modalIsOpen, closeModal, setRecoveryMode, recoveryMode, setStytchUUID} = useContext(AuthContext);
 
     const isConnected = useCallback(() => {
         if(isEmpty(user) && cookiesCheckedRef.current) {
@@ -27,7 +27,7 @@ const useAuth = (required = false) => {
         }
     }, [isConnected]); 
 
-    return { disconnect, user, isConnected, triggerEthereumLogin, updateUser, modalIsOpen, closeModal, setRecoveryMode, recoveryMode };
+    return { disconnect, user, isConnected, triggerEthereumLogin, updateUser, modalIsOpen, closeModal, setRecoveryMode, recoveryMode, setStytchUUID };
 }
 
 export default useAuth;
