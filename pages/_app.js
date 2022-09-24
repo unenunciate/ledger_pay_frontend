@@ -20,10 +20,6 @@ import { NotificationProvider } from "../contexts/notification";
 import { AuthProvider } from "../contexts/auth";
 import { SmartAccountProvider } from '../contexts/smartAccount';
 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-
-
 const App = ({ Component, pageProps }) => {
   const queryClient = new QueryClient();
 
@@ -35,8 +31,6 @@ const App = ({ Component, pageProps }) => {
           })
         ]
     );
-
-  
 
   const wagmiClient  = createClient({
     autoConnect: true,
@@ -64,7 +58,6 @@ const App = ({ Component, pageProps }) => {
             </NotificationProvider>
           </Web3ModalProvider>
         </Hydrate>
-        <ReactQueryDevtools />
       </QueryClientProvider>
     </CookiesProvider>
   );

@@ -1,46 +1,77 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useAuth } from "useAuth";
 import useSmartAccount from '../hooks/useSmartAccount';
 //import SmartAccountABI from '../utils/contracts/abi/SmartContractWallet'
-import { useContract, useSigner } from '@web3modal/react';
+import { useAccount, useNetwork } from '@web3modal/react';
 
-const useWorldId = ( approve = false, revoke = false, recover = false, setup = false, callback = null ) => {
-    const [proof, setProof] = useState(null);
-    const [action, setAction] = useState(approve ? 'approve': revoke ? 'revoke' : recover ? 'recover' : setup ? 'setup' : null);
+const useWorldId = ( act = "setup", callback = null ) => {
+    const [action, setAction] = useState(act);
 
-    const { smartAccountAddress,  createUserOperation, executeOP } = useSmartAccount();
+    const { recoveryMode } = useAuth();
+    const { address } = useAccount();
 
-    const { signer } = useSigner();
+    const { chain } = useNetwork();
 
-   // const {} = useContract(SmartAccountAddress, SmartAccountABI, signer);
-  
-    useEffect(() => {
-        if(action === "approve") {
+    const { createAndSendUserOP } = useSmartAccount();
 
-        } else if (action === "revoke") {
+    const onVerificationSuccess = (proof) => {
+        if(chain.id === 137) {
+            if (action === "recover") {
+                if(recoveryMode) {
+                    //this is the address to recover too
+                    address
 
-        } else if (action === "recover") {
+                    //all data
+                    //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
+                    //once tx prepared  V first param function below
+                    createAndSendUserOP();
 
-        } else if (action === "setup") {
-            if(proof) {
-                const op = createUserOperation(smartAccountAddress, 0, {})
-                executeOP(op);
+                    if(callback) {
+                        callback();
+                    }
+                }
+
+            } else if (action === "setup") {
+                    
+                //all data
+                //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
+                //once tx prepared  V first param function below
+                createAndSendUserOP();
+
                 if(callback) {
                     callback();
                 }
+                
             }
         }
-        
-    }, [proof, action]);
 
-    const onVerificationSuccess = (response) => {
-        setProof(response);
     }
 
-    const updateAction = (a = false, rev = false, rec = false, s = false) => {
-        setAction(a ? 'approve': rev ? 'revoke' : rec ? 'recover' : s ? 'setup' : null);
+    const updateAction = (action) => {
+        setAction(action);
+
+        if(action === "approve") {
+            //all data
+            //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
+            //once tx prepared  V first param function below
+            createAndSendUserOP();
+
+            if(callback) {
+                callback();
+            }
+        } else if (action === "revoke") {
+            //all data
+            //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
+            //once tx prepared  V first param function below
+            createAndSendUserOP();
+
+            if(callback) {
+                callback();
+            }
+        }
     }
 
-    return { proof, onVerificationSuccess, updateAction };
+    return { onVerificationSuccess, updateAction };
 }
 
 export default useWorldId;
