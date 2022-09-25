@@ -17,7 +17,7 @@ const WorldIDWidget = dynamic(
   { ssr: false }
 );
 
-const Settings = ({ d }) => {
+const Settings = ({ }) => {
   const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } =
     useAuth();
   const { updateAction, onVerificationSuccess } = useWorldId();
@@ -66,8 +66,7 @@ const Settings = ({ d }) => {
           </div>
 
           <div className="flex flex-col items-center justify-center w-full space-y-6 text-blue-400">
-            {false || user?.worldcoinSetup ? (
-              false || user?.worldcoinEnabled ? (
+            {user?.worldcoinSetup ? (
                 <>
                   <div className="flex flex-col items-center justify-center space-y-2">
                     <span>Worldcoin Recovery</span>
@@ -96,27 +95,25 @@ const Settings = ({ d }) => {
                         onError={(error) => console.error(error)}
                       />
                     </button>
+
                     <button
                       className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                       onClick={() => updateAction("revoke")}
                     >
                       <span>Disable</span>
                     </button>
-                  </div>
-                  <div className="flex flex-col items-center justify-center space-y-2"></div>
-                </>
-              ) : (
-                <>
-                  <span>Worldcoin Recovery</span>
-                  <button
+
+                    <button
                     className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                     onClick={() => updateAction("approve")}
                   >
                     <span>Enable</span>
                   </button>
+                  </div>
+                  <div className="flex flex-col items-center justify-center space-y-2"></div>
+                 
                 </>
-              )
-            ) : (
+              ) : (
               <>
                 <span>Worldcoin Recovery</span>
                 <WorldIDWidget
@@ -139,27 +136,14 @@ const Settings = ({ d }) => {
 
 export default Settings;
 
+
 export async function getServerSideProps(context) {
-  //const res = await fetch({method: "get", url:`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/challenges/getPage?${serialize(filterQuery)}`});
-  // const data = (JSON.parse(res.body))?.data;
-  //DATE IN SCENIARO 1/13/2022
-  const data = {
-    id: 1,
-    results: [],
-    creater: { username: "name", image: "" },
-    dateRange: { start: "1/12/2022", end: "1/12/2023", remaining: 364 },
-    ante: 2000,
-    challengeAmount: 5000,
-    goals: { start: 250, end: 180, current: 230 },
-    odds: { yes: 3 / 4, no: 1 / 4 },
-  };
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+  const queryClient = new QueryClient();
 
   return {
-    props: { d: data },
-  };
+      props: {
+          dehydratedState: dehydrate(queryClient),
+          token: context.resolvedUrl?.searchParameters?.token ?? null
+      },
+  }
 }

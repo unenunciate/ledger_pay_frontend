@@ -42,3 +42,17 @@ const Connect = () => {
 };
 
 export default Connect;
+
+
+
+
+export async function getServerSideProps(context) {
+  const queryClient = new QueryClient();
+
+  return {
+      props: {
+          dehydratedState: dehydrate(queryClient),
+          token: context.resolvedUrl?.searchParameters?.token ?? null
+      },
+  }
+}
