@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNetwork } from '@web3modal/react';
 import { useSmartAccount } from './useSmartAccount';
+import { chainId } from 'wagmi';
+import { decimalConversion } from "../utils/decimalConversion.js";
 
 //Arrays of exchange objects (not sure what you will need here)
 //what ever need to swap (preferably anytoken)
@@ -14,8 +16,9 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
 
     const [tokenFromAddress, setTokenFromAddress] = useState(tokenFrom);
     const [tokenToAddress, setTokenToAddress] = useState(tokenTo);
-    const [exchange, setExchange] = useState(exchanges[chain.id]);
+    const [exchange, setExchange] = useState(exchanges[137]);
     const [amount, setAmount] = useState(0);
+    const [decimals, setDecimals] = useState(18);
 
     const { smartAccountAddress } = useSmartAccount();
 
@@ -26,6 +29,10 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
     const { createAndSendUserOP } = useSmartAccount();
 
     const initSwap = async () => {
+
+        if(chainId.id != 137) {
+            return;
+        }
 
         const deadline = (Date.now() / 1000) + 60;
         if(tokenFromAddress === null && tokenToAddress !== null) {
@@ -40,7 +47,6 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
                 "function swapExactETHForTokens(uint,address[],address,uint)"
             ]);
 
-
             let callData = iface.encodeFunctionData(
                 "swapExactETHForTokens", [
                 0,
@@ -50,7 +56,9 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
 
             ]);
 
-            let txObject = {value : amount, target : target, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null}   
+            let amountConverted = decimalConversion(amount, decimals)
+
+            let txObject = {value : amountConverted, target : target, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null}   
 
             createAndSendUserOP(txObject);
 
@@ -71,9 +79,11 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
                 "function swapExactTokensForTokens(uint,uint,address[],address,uint)"
             ]);
 
+            let amountConverted = decimalConversion(amount, decimals)
+
             let callData = iface.encodeFunctionData(
                 "swapExactTokensForTokens", [
-                amount,
+                amountConverted,
                 0,
                 path,
                 smartAccountAddress,
@@ -97,6 +107,8 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
 
             const path = [tokenFromAddress, exchange.wETH];
 
+            let amountConverted = decimalConversion(amount, decimals)
+
             //Gas To ERC20
 
             let iface = new ethers.utils.Interface([
@@ -105,7 +117,7 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
 
             let callData = iface.encodeFunctionData(
                 "swapExactTokensForETH", [
-                amount,
+                amountConverted,
                 0,
                 path,
                 smartAccountAddress,
