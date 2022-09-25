@@ -1,6 +1,4 @@
 
-import { withSentry } from '@sentry/nextjs';
-
 async function handler(req, res) {
 
 
