@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { useEffect, useRef, useState, Fragment } from "react";
 import QRCode from "react-qr-code";
-import useSuperfuild from "../hooks/useSuperfuild";
+import useSuperfluid from "../hooks/useSuperfluid";
 
 const cryptos = [
   { id: 0, name: "Polygon", icon: { url: "/polygon.png" } },
@@ -22,7 +22,9 @@ const SendReceive = ({ open, setOpen, tab }) => {
   const [address, setAddress] = useState("");
   const backgroundRef = useRef(null);
 
-  const { length, setLength } = useSuperfuild();
+  const [enabled, setEnabled] = useState(false);
+
+  const { length, setLength } = useSuperfluid();
 
   useEffect(() => {
     document.addEventListener("mousedown", (event) => {
@@ -273,7 +275,7 @@ const SendReceive = ({ open, setOpen, tab }) => {
                       </div>
 
                       <div className="flex flex-row space-x-2">
-                          <Image src="/superfluid.png" width={96} height={24} />
+                          <Image src="/superfluid.png" width={96} height={24} className="rounded-lg" />
                           <Switch
                             checked={enabled}
                             onChange={setEnabled}
@@ -289,7 +291,7 @@ const SendReceive = ({ open, setOpen, tab }) => {
                             />
                           </Switch>
                           <input
-                              className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-8" 
+                              className="w-8 h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg" 
                               placeholder="Days"
                               type="text"
                               value={length}

@@ -23,7 +23,8 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
     const { smartAccountAddress } = useSmartAccount();
 
     useEffect(() => {
-        setExchange(exchanges[chain.id]);
+        console.log(chain);
+        setExchange(exchanges[chain]);
     }, [chain])
 
     const { createAndSendUserOP } = useSmartAccount();
@@ -65,7 +66,7 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
                 callback();
             }
 
-        } else if(tokenFrom !== null && tokenTo !== null) {
+        } else if(tokenFromAddress !== null && tokenToAddress !== null) {
             //ERC20 To ERC20    
 
             let target = exchange.routerAddress;
@@ -133,7 +134,7 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
         }
     }
 
-    return { initSwap, setTokenAddress, tokenAddress, tokenFromAddress, tokenToAddress,  amount, exchange, setAmount, setExchange  };
+    return { initSwap, setTokenFromAddress, setTokenToAddress, tokenFromAddress, tokenToAddress,  amount, exchange, setAmount, setExchange  };
 }
 
 export default useSwap;
