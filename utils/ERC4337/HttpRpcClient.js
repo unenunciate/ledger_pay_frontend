@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { hexValue, resolveProperties } from 'ethers/lib/utils';
-import bundlerHeaders from '../queries/headers';
 export class HttpRpcClient {
     constructor(bundlerUrl, entryPointAddress, chainId) {
         this.bundlerUrl = bundlerUrl;
@@ -8,11 +7,10 @@ export class HttpRpcClient {
         this.chainId = chainId;
         this.userOpJsonRpcProvider = new ethers.providers.JsonRpcProvider(this.bundlerUrl, {
             name: 'Not actually connected to network, only talking to the Bundler!',
-            chainId,
-            headers: bundlerHeaders(chainId)
+            chainId
         });
     }
-    async sendUserOpToBundler(userOp1, headers) {
+    async sendUserOpToBundler(userOp1) {
         const userOp = await resolveProperties(userOp1);
         const hexifiedUserOp = Object.keys(userOp)
             .map(key => {

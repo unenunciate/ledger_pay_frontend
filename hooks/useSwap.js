@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNetwork } from '@web3modal/react';
-import { useSmartAccount } from './useSmartAccount';
+import useSmartAccount from './useSmartAccount';
 import { chainId } from 'wagmi';
 import { decimalConversion } from "../utils/decimalConversion.js";
 
 //Arrays of exchange objects (not sure what you will need here)
 //what ever need to swap (preferably anytoken)
 const exchanges = {
-    137 : {routerAddress : "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", wETH : "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"},
+    137 : [{routerAddress : "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", wETH : "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"},],
     10 : []
 }
 
@@ -30,7 +30,7 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
 
     const initSwap = async () => {
 
-        if(chainId.id != 137) {
+        if(chainId.id !== 137) {
             return;
         }
 
@@ -53,7 +53,6 @@ const useSwap = (tokenFrom = null, tokenTo = null, callback = null) => {
                 path,
                 smartAccountAddress,
                 deadline
-
             ]);
 
             let amountConverted = decimalConversion(amount, decimals)

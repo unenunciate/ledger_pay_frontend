@@ -1,4 +1,4 @@
-import { Transition, Tab, Listbox } from "@headlessui/react";
+import { Transition, Tab, Listbox, Switch} from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 import Image from "next/image";
@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { useEffect, useRef, useState, Fragment } from "react";
 import QRCode from "react-qr-code";
+import useSuperfuild from "../hooks/useSuperfuild";
 
 const cryptos = [
   { id: 0, name: "Polygon", icon: { url: "/polygon.png" } },
@@ -20,6 +21,8 @@ const SendReceive = ({ open, setOpen, tab }) => {
   const [dollarAmount, setDollarAmount] = useState(0);
   const [address, setAddress] = useState("");
   const backgroundRef = useRef(null);
+
+  const { length, setLength } = useSuperfuild();
 
   useEffect(() => {
     document.addEventListener("mousedown", (event) => {
@@ -261,13 +264,38 @@ const SendReceive = ({ open, setOpen, tab }) => {
                           To
                         </label>
                         <input
-                          className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-36 form-input focus:border-none focus:outline-none"
+                          className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-36" 
                           placeholder="Address"
                           type="text"
                           value={address}
                           onChange={(e) => setAddress(e.target.value)}
                         />
                       </div>
+
+                      <div className="flex flex-row space-x-2">
+                          <Image src="/superfluid.png" width={96} height={24} />
+                          <Switch
+                            checked={enabled}
+                            onChange={setEnabled}
+                            className={`${
+                              enabled ? 'bg-purple-600' : 'bg-purple-200'
+                            } relative inline-flex h-6 w-11 items-center rounded-full`}
+                          >
+                            <span className="sr-only">Enable notifications</span>
+                            <span
+                              className={`${
+                                enabled ? 'translate-x-6' : 'translate-x-1'
+                              } inline-block h-4 w-4 transform rounded-full bg-blue-400 transition`}
+                            />
+                          </Switch>
+                          <input
+                              className="h-full px-2 py-2 text-center text-blue-400 placeholder-blue-400 bg-gray-700 border-none rounded-lg w-8" 
+                              placeholder="Days"
+                              type="text"
+                              value={length}
+                              onChange={(e) => setLength(e.target.value)}
+                            />
+                        </div>
                     </div>
                     <div className="flex flex-row items-center justify-center w-full h-1/4"></div>
                     <div className="flex flex-col items-center justify-center w-full">

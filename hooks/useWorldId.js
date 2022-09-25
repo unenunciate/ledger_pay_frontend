@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "./useAuth";
+import useAuth from "./useAuth";
 import useSmartAccount from '../hooks/useSmartAccount';
 //import SmartAccountABI from '../utils/contracts/abi/SmartContractWallet'
 import { useAccount, useNetwork } from '@web3modal/react';

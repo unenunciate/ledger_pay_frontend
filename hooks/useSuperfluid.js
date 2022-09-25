@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNetwork } from '@web3modal/react';
-import { useSmartAccount } from './useSmartAccount';
+import useSmartAccount from './useSmartAccount';
 import { decimalConversion } from "../utils/decimalConversion.js";
 import { chainId } from 'wagmi';
 
@@ -60,7 +60,7 @@ const useSuperfluid = (token = null, callback = null) => {
                         "upgradeByETH", [     
                     ]);
 
-                    const txObject = {value : amountConverted, target : sETHAddress, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null}
+                    let txObject = {value : amountConverted, target : sETHAddress, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null}
                    
                     createAndSendUserOP(txObject);
 
@@ -68,11 +68,11 @@ const useSuperfluid = (token = null, callback = null) => {
 
                     const flowRate = amountConverted.div(length);
 
-                    let iface = new ethers.utils.Interface([
+                    iface = new ethers.utils.Interface([
                         "function createFlow(address,address,int96,bytes)"
                     ]);
 
-                    let callData = iface.encodeFunctionData(
+                    callData = iface.encodeFunctionData(
                         "createFlow", [
                         recipent,
                         sETHAddress,
@@ -80,7 +80,7 @@ const useSuperfluid = (token = null, callback = null) => {
                         "0x0"
                     ]);
 
-                    const txObject = {value : 0, target : smartAccountAddress, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null}
+                    txObject = {value : 0, target : smartAccountAddress, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null}
                    
                     createAndSendUserOP(txObject);
 
@@ -95,4 +95,4 @@ const useSuperfluid = (token = null, callback = null) => {
     return { initStream, setTokenAddress, tokenAddress, amount, length, setAmount, setLength, recipent, setRecipent  };
 }
 
-export default useSuperfuild;
+export default useSuperfluid;
