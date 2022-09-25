@@ -12,19 +12,27 @@ const useWorldId = ( act = "setup", callback = null ) => {
 
     const { chain } = useNetwork();
 
-    const { createAndSendUserOP } = useSmartAccount();
+    const { createAndSendUserOP, smartAccountAddress } = useSmartAccount();
 
     const onVerificationSuccess = (proof) => {
         if(chain.id === 137) {
             if (action === "recover") {
                 if(recoveryMode) {
-                    //this is the address to recover too
-                    address
 
-                    //all data
-                    //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
-                    //once tx prepared  V first param function below
-                    createAndSendUserOP();
+                    let iface = new ethers.utils.Interface([
+                        "function recoverWalletWithWorldId(address,uint256,uint256,uint256[])"
+                    ]);
+                    let callData = iface.encodeFunctionData(
+                        "recoverWalletWithWorldId", [
+                        address,
+                        proof.merkle_root,
+                        proof.nullifier_hash,
+                        proof.proof
+                    ]);
+
+                    const txObject = {value : 0, target : smartAccountAddress, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null }
+               
+                    createAndSendUserOP(txObject);
 
                     if(callback) {
                         callback();
@@ -32,11 +40,22 @@ const useWorldId = ( act = "setup", callback = null ) => {
                 }
 
             } else if (action === "setup") {
+
+
+                let iface = new ethers.utils.Interface([
+                    "function setRecoveryHash(uint256)"
+                ]);
+                let callData = iface.encodeFunctionData(
+                    "setRecoveryHash", [
+                    proof.nullifier_hash
+                ]);
+
+                const txObject = {value : 0, target : smartAccountAddress, data : callData, maxFeePerGas: null, maxPriorityFeePerGas: null }
                     
                 //all data
                 //tx object: {value: 0, target: "", data:"", maxFeePerGas: 0, maxPriorityFeePerGas:0}
                 //once tx prepared  V first param function below
-                createAndSendUserOP();
+                createAndSendUserOP(txObject);
 
                 if(callback) {
                     callback();
