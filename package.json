@@ -29,6 +29,7 @@
     "@web3modal/react": "^2.0.0-alpha.2",
     "@worldcoin/id": "^0.8.0",
     "autoprefixer": "^10.4.7",
+    "aws-amplify": "^4.3.36",
     "currency.js": "^2.0.4",
     "ethers": "^5.7.0",
     "lodash": "^4.17.21",

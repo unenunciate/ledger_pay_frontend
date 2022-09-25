@@ -8,6 +8,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
+import Amplify from 'aws-amplify';
+
 import { ClientConfigurations } from '../utils/ClientConfigurations';
 
 import { createClient, configureChains, defaultChains } from 'wagmi';
@@ -19,6 +21,11 @@ import { Web3ModalProvider } from '@web3modal/react';
 import { NotificationProvider } from "../contexts/notification";
 import { AuthProvider } from "../contexts/auth";
 import { SmartAccountProvider } from '../contexts/smartAccount';
+
+Amplify.configure({
+  ssr: true
+});
+
 
 const App = ({ Component, pageProps }) => {
   const queryClient = new QueryClient();
