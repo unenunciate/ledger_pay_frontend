@@ -3,13 +3,13 @@ import Image from 'next/image';
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../../hooks/useAuth';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import { Grid } from 'react-loading-icons';
 
 const Validate = ({ token }) => {
-  const { triggerEthereumLogin, user, isConnected, setStytchUUID } = useAuth();
+  const { user, isConnected, setStytchUUID } = useAuth();
 
   const router = useRouter();
 

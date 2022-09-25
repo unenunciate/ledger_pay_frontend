@@ -20,12 +20,7 @@ const WorldIDWidget = dynamic(
 const Settings = ({ d }) => {
   const { user, recoveryMode, setRecoveryMode, triggerEthereumLogin } =
     useAuth();
-  const { updateAction, onVerificationSuccess } = useWorldId(
-    false,
-    false,
-    false,
-    user?.worldcoinSetup ? false : true
-  );
+  const { updateAction, onVerificationSuccess } = useWorldId();
   const [openCI, setOpenCI] = useState(false);
   const [openBI, setOpenBI] = useState(false);
 
@@ -88,13 +83,22 @@ const Settings = ({ d }) => {
                     <button
                       className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
                       disabled={!recoveryMode}
-                      onClick={() => updateAction(false, false, true)}
+                      onClick={() => updateAction("recover")}
                     >
                       <span>Recover</span>
+                      <WorldIDWidget
+                        actionId={process.env.NEXT_PUBLIC_WORLD_ID_ACTION_ID}
+                        signal={`${recoveryMode ? address : ""}`}
+                        enableTelemetry
+                        onSuccess={(verificationResponse) =>
+                          onVerificationSuccess(verificationResponse)
+                        }
+                        onError={(error) => console.error(error)}
+                      />
                     </button>
                     <button
                       className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
-                      onClick={() => updateAction(false, true)}
+                      onClick={() => updateAction("revoke")}
                     >
                       <span>Disable</span>
                     </button>
@@ -106,7 +110,7 @@ const Settings = ({ d }) => {
                   <span>Worldcoin Recovery</span>
                   <button
                     className="flex items-center justify-center w-24 h-12 bg-purple-600 rounded-lg text-bold hover:border-pruple-300 hover:text-blue-100 hover:bg-purple-300 active:scale-75"
-                    onClick={() => updateAction(true)}
+                    onClick={() => updateAction("approve")}
                   >
                     <span>Enable</span>
                   </button>

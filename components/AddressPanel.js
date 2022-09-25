@@ -122,7 +122,7 @@ const AddressPanel = () => {
             <button
               onClick={() =>
                 addAddress({
-                  street1: street1 + street2,
+                  street1: street1 + " " + street2,
                   city: city,
                   state: state,
                   postalCode: postalCode,
