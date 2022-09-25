@@ -6,6 +6,11 @@ import Header from "../components/Header";
 import CardInfo from "../components/CardInfo";
 import BankInfo from "../components/BankInfo";
 
+import {
+  QueryClient,
+  dehydrate
+} from '@tanstack/react-query';
+
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import useWorldId from "../hooks/useWorldId";

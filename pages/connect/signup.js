@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import {
+  QueryClient,
+  dehydrate
+} from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useAuth from '../../hooks/useAuth';

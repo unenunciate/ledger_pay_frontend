@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useAuth from '../../../hooks/useAuth';
+
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import { Grid } from 'react-loading-icons';
