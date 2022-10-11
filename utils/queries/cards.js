@@ -21,11 +21,11 @@ const getCards = async () => {
 };
 
 const addCard = async (data) => {
-  // Data: {"number":"1241422525","cvv":"444","month":"5","year":"32"}
+  // Data: {"number":"7676444455556874","cvv":"777","month":"7","year":"27","issuer":"VISA","nickname":"xxxx xxxx xxxx 6874"}
   console.log(`Data: ${JSON.stringify(data)}`);
 
   // const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-debit-card`;
-  const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/strapi-plugin-wyre/add-debit-card`;
+  const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-debit-card`;
 
   const settings = {
     method: "POST",
@@ -50,7 +50,7 @@ const addAddress = async (data) => {
   // Address Data: {"street1":"Mainstreet 12Apt 645","city":"Boston","state":"NY","postalCode":"54217","country":"US"}
   console.log(`Address Data: ${JSON.stringify(data)}`);
 
-  const CREATE_ADDRESS_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/strapi-plugin-wyre/add-address`;
+  const CREATE_ADDRESS_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-address`;
 
   const settings = {
     method: "POST",

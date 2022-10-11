@@ -203,6 +203,13 @@ const CardInfo = ({ open, setOpen, tab }) => {
                             cvv: cvv,
                             month: month,
                             year: year,
+                            issuer:
+                              number.substring(0, 1) == 5
+                                ? "MASTERCARD"
+                                : "VISA",
+                            nickname: "xxxx xxxx xxxx ".concat(
+                              number.substring(number, number.length - 4)
+                            ),
                           })
                         }
                         className="flex items-center justify-center w-1/2 py-6 text-3xl font-bold text-blue-400 bg-purple-600 rounded lg:1/3 hover:bg-purple-300 hover:text-blue-100 sm:text-xl"

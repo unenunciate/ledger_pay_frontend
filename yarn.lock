@@ -3392,12 +3392,12 @@
 
 "@stytch/stytch-js@^3.3.0":
   version "3.3.2"
-  resolved "https://registry.yarnpkg.com/@stytch/stytch-js/-/stytch-js-3.3.2.tgz#62a0fd4c3ed4e2d07b46d1aef0d7d1d5374be9d7"
+  resolved "https://registry.npmjs.org/@stytch/stytch-js/-/stytch-js-3.3.2.tgz#62a0fd4c3ed4e2d07b46d1aef0d7d1d5374be9d7"
   integrity sha512-Q2tBtneC7jxrJxPCtBjg/Amp2SUxhWpxrfTTn8wjfZWcc+iPjqqM/FXZ7hGieZ015IKA8CDRuSK/ZJgVw8hoSA==
 
 "@stytch/stytch-react@^4.1.1":
   version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@stytch/stytch-react/-/stytch-react-4.1.1.tgz#2276934caa136bd64f6d53b3a88ffc3f0b44aefc"
+  resolved "https://registry.npmjs.org/@stytch/stytch-react/-/stytch-react-4.1.1.tgz#2276934caa136bd64f6d53b3a88ffc3f0b44aefc"
   integrity sha512-nWIwWrPoDm/qgX40gC9op0oJWS0hHxlFg14wZ9T5Mb5LPg/L0dYVQCTQaX20P0Yv2ms7qH4Mpbj6chQ0K9DDtA==
   dependencies:
     "@stytch/stytch-js" "^3.3.0"

@@ -24,11 +24,12 @@ const addBankAccount = async (data) => {
   // Data: {"accountOwner":"Timmy Smith","accountNumber":"14781645","routingNumber":"324-23745-334"}
   console.log(`Data: ${JSON.stringify(data)}`);
 
-  const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-bank-account`;
+  // const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-bank`;
+  const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-bank`;
 
   const settings = {
     method: "POST",
-    headers: wyreHeaders,
+    headers: wyreHeaders(),
     body: JSON.stringify(data),
   };
 
@@ -46,8 +47,8 @@ const addBankAccount = async (data) => {
 };
 
 const addAddress = async (data) => {
-  // Address Data: {"street1":"Mainstreet 12Apt 645","city":"Boston","state":"NY","postalCode":"54217","country":"US"}
-  console.log(`Address Data: ${JSON.stringify(data)}`);
+  // Address Data: {"street1":"Mainstreet 34 Apt 77","city":"New York","state":"NY","postalCode":"10001","country":"US"}
+  console.log(`Address Data from bankaccounts.js: ${JSON.stringify(data)}`);
 
   const CREATE_ADDRESS_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-address`;
 

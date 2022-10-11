@@ -11,6 +11,7 @@ import {
   addBankAccount,
   addAddress,
 } from "../utils/queries/bankaccounts";
+import { stubString } from "lodash";
 
 const BankInfo = ({ open, setOpen, tab }) => {
   const [accountOwner, setAccountOwner] = useState("");
@@ -183,9 +184,14 @@ const BankInfo = ({ open, setOpen, tab }) => {
                       <button
                         onClick={() =>
                           addBankAccount({
-                            accountOwner: accountOwner,
-                            accountNumber: accountNumber,
-                            routingNumber: routingNumber,
+                            account: accountNumber,
+                            routing: routingNumber,
+                            nickname: "xxxx xxxx xxxx ".concat(
+                              accountNumber.substring(
+                                accountNumber,
+                                accountNumber.length - 4
+                              )
+                            ),
                           })
                         }
                         className="flex items-center justify-center w-1/2 py-6 text-3xl font-bold text-blue-400 bg-purple-600 rounded lg:1/3 hover:bg-purple-300 hover:text-blue-100 sm:text-xl"

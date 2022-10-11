@@ -1,14 +1,14 @@
 import { wyreHeaders } from "./headers";
 
 const addAddress = async (data) => {
-  // Address Data: {"street1":"Mainstreet 12Apt 645","city":"Boston","state":"NY","postalCode":"54217","country":"US"}
-  console.log(`Address Data: ${JSON.stringify(data)}`);
+  // Address Data: {"street1":"Mainstreet 34 Apt 77","city":"New York","state":"NY","postalCode":"10001","country":"US"}
+  console.log(`Address Data from address.js: ${JSON.stringify(data)}`);
 
   const CREATE_ADDRESS_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-address`;
 
   const settings = {
     method: "POST",
-    headers: wyreHeaders,
+    headers: wyreHeaders(),
     body: JSON.stringify(data),
   };
 
