@@ -24,7 +24,6 @@ const addBankAccount = async (data) => {
   // Data: {"accountOwner":"Timmy Smith","accountNumber":"14781645","routingNumber":"324-23745-334"}
   console.log(`Data: ${JSON.stringify(data)}`);
 
-  // const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-bank`;
   const CREATE_ENDPOINT = `${process.env.NEXT_PUBLIC_STRAPI_URL}api/strapi-plugin-wyre/add-bank`;
 
   const settings = {
